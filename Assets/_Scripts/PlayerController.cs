@@ -40,6 +40,8 @@ public class PlayerController : MonoBehaviour
             playerVelocity.y = 0f;
         }
 
+        Vector3 cameraForward = Camera.main.transform.forward;
+
         Vector3 move = new Vector3(movementInput.x, 0, movementInput.y);
         controller.Move(move * Time.deltaTime * playerSpeed);
 
