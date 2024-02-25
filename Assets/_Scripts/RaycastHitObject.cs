@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class RaycastHitObject : MonoBehaviour
@@ -8,8 +6,11 @@ public class RaycastHitObject : MonoBehaviour
 
     void FixedUpdate()
     {
+        // Get the center of the camera's viewport (middle of the screen)
+        Vector3 rayOrigin = camera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0.0f));
+
         RaycastHit hit;
-        Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+        Ray ray = new Ray(rayOrigin, camera.transform.forward);
 
         if (Physics.Raycast(ray, out hit))
         {
@@ -21,4 +22,3 @@ public class RaycastHitObject : MonoBehaviour
         }
     }
 }
-

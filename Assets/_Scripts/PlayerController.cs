@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
     {
         movementInput = context.ReadValue<Vector2>();
     }
+
     public void OnJump(InputAction.CallbackContext context)
     {
         jumped = context.action.triggered;
@@ -41,16 +42,12 @@ public class PlayerController : MonoBehaviour
         }
 
         Vector3 cameraForward = Camera.main.transform.forward;
+        Vector3 cameraRight = Camera.main.transform.right;
 
-        Vector3 move = new Vector3(movementInput.x, 0, movementInput.y);
-        controller.Move(move * Time.deltaTime * playerSpeed);
+        Vector3 move = cameraForward * movementInput.y + cameraRight * movementInput.x;
 
-        if (move != Vector3.zero)
-        {
-            gameObject.transform.forward = move;
-        }
+        controller.Move(move.normalized * Time.deltaTime * playerSpeed);
 
-        // Changes the height position of the player..
         if (jumped && groundedPlayer)
         {
             playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
