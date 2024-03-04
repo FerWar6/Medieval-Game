@@ -2,14 +2,15 @@ using UnityEngine;
 
 public class Interactable_Bonfire : Interactable
 {
-    private Animator anim;
+    [SerializeField]
+    private GameObject fire;
     private void Start()
     {
-        anim = GetComponent<Animator>();
+        fire.SetActive(false);
     }
     protected override void Interact()
     {
-        anim.SetBool("onFire", true);
+        fire.SetActive(true);
         Debug.Log("interacted");
     }
 }
