@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -16,11 +14,19 @@ public class ManageSettings : MonoBehaviour
         fullscreenToggle.onValueChanged.AddListener(SetFullscreen);
         sensSlider.onValueChanged.AddListener(ChangePlayerSens);
     }
+
     private void SetFullscreen(bool fullscreen)
     {
-        if (fullscreen) Screen.fullScreenMode = FullScreenMode.ExclusiveFullScreen;
-        else Screen.fullScreenMode = FullScreenMode.Windowed;
+        if (fullscreen)
+        {
+            Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, true);
+        }
+        else
+        {
+            Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, false);
+        }
     }
+
     public void ChangePlayerSens(float value)
     {
 

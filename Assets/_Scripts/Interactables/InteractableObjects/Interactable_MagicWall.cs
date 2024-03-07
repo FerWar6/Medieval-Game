@@ -4,29 +4,30 @@ using UnityEngine;
 
 public class Interactable_MagicWall : Interactable
 {
-    [SerializeField]  Interactable_MagicWall wall;
-    [SerializeField] PlayerInventory inv;
+    Interactable_MagicWall wall;
     private Animator anim;
 
     string message = null;
     private void Start()
     {
+        wall = GetComponent<Interactable_MagicWall>();
         message = wall.promptMessage;
         wall.promptMessage = null;
         anim = GetComponent<Animator>();
     }
     private void Update()
     {
-        if(inv.inventoryGameobjects.Count == 1)
+        if (PlayerInventory.instance.ListContainsItemByName("Keyitem_Jewel"))
         {
             wall.promptMessage = message;
         }
     }
     protected override void Interact()
     {
-        if (inv.inventoryGameobjects.Count == 1)
+
+        if (PlayerInventory.instance.ListContainsItemByName("Keyitem_Jewel"))
         {
-            inv.DestroyAllItemsInInventory();
+            PlayerInventory.instance.DestroyAllItemsInInventory();
             anim.SetTrigger("OpenDoor");
             DestroyInteractable();
         }
