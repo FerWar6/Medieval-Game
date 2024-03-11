@@ -7,13 +7,12 @@ public class FirstPersonCamera : MonoBehaviour
 {
     public Camera cam;
     [SerializeField] Transform player;
-    [SerializeField] float mouseSens = 2f;
+    [HideInInspector] float mouseSens;
     float cameraVerticalRotation = 0;
-
-    bool lockedCursor = true;
 
     void Start()
     {
+        mouseSens = SettingsManager.instance.playerSens;
         cam = GetComponent<Camera>();
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
@@ -31,5 +30,10 @@ public class FirstPersonCamera : MonoBehaviour
         transform.localEulerAngles = new Vector3(cameraVerticalRotation, 0, 0);
 
         player.Rotate(Vector3.up * inputX);
+    }
+    private void OnDisable()
+    {
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 }

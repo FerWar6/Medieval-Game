@@ -405,7 +405,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0727a1408f0ea734d8764672e9706d4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneName: testScene
+  sceneName: MainMap
 --- !u!1 &797514920
 GameObject:
   m_ObjectHideFlags: 0
@@ -1114,7 +1114,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32b056f75b640644dab7b6b512b8dc1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  score: 0
+  fullscreen: 1
+  playerSens: 0.5
+  musicVolume: 0.5
+  soundEffectVolume: 0.5
 --- !u!1 &1921901478
 GameObject:
   m_ObjectHideFlags: 0
