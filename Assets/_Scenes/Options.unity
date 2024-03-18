@@ -3567,7 +3567,7 @@ GameObject:
   - component: {fileID: 485573595}
   - component: {fileID: 485573594}
   m_Layer: 5
-  m_Name: Arrow
+  m_Name: ArrowHitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6267,7 +6267,7 @@ GameObject:
   - component: {fileID: 996678574}
   - component: {fileID: 996678573}
   m_Layer: 5
-  m_Name: Arrow
+  m_Name: ArrowHitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10552,6 +10552,7 @@ GameObject:
   - component: {fileID: 1557072384}
   - component: {fileID: 1557072383}
   - component: {fileID: 1557072386}
+  - component: {fileID: 1557072387}
   m_Layer: 5
   m_Name: 'SettingFullscreen '
   m_TagString: Untagged
@@ -10713,6 +10714,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &1557072387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1557072379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bc6a7ef69a42cd428dc2f2669198ceb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1557915998
 PrefabInstance:
   m_ObjectHideFlags: 0
