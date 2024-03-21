@@ -9,7 +9,7 @@ public class EnemyBehaviour : MonoBehaviour
 
     public LayerMask whatIsGround, whatIsPlayer;
 
-    private int health;
+    public int health;
     //Patroling
     public Vector3 walkPoint;
     bool walkPointSet;
@@ -38,7 +38,7 @@ public class EnemyBehaviour : MonoBehaviour
 
         if (!playerInSightRange && !playerInAttackRange) Patroling();
         if (playerInSightRange && !playerInAttackRange) ChasePlayer();
-        if (!playerInAttackRange && playerInSightRange) AttackPlayer();
+        if (playerInAttackRange && playerInSightRange) AttackPlayer();
 
 
     }
@@ -82,8 +82,8 @@ public class EnemyBehaviour : MonoBehaviour
             // attack player
             Rigidbody rb = Instantiate(projectile, transform.position, Quaternion.identity).GetComponent<Rigidbody>();
 
-            rb.AddForce(transform.forward * 32f, ForceMode.Impulse);
-            rb.AddForce(transform.up * 8f, ForceMode.Impulse);
+            rb.AddForce(transform.forward * 10f, ForceMode.Impulse);
+            rb.AddForce(transform.up * 5f, ForceMode.Impulse);
             //
             alreadyAttacked = true;
             Invoke(nameof(ResetAttack), timeBetweenAttacks);
