@@ -7,12 +7,12 @@ public class FirstPersonCamera : MonoBehaviour
 {
     public Camera cam;
     [SerializeField] Transform player;
-    [HideInInspector] float mouseSens;
+    [HideInInspector] float mouseSens = 1;
     float cameraVerticalRotation = 0;
 
     void Start()
     {
-        mouseSens = SettingsManager.instance.playerSens;
+       // mouseSens = SettingsManager.instance.playerSens;
         cam = GetComponent<Camera>();
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;

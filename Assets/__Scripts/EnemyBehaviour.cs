@@ -1,41 +1,108 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyBehaviour : MonoBehaviour
 {
-    [SerializeField] private float speed = 1.0f;
-    private Transform playerTransform;
+    public NavMeshAgent agent;
 
-    private void Start()
+    public Transform player;
+
+    public LayerMask whatIsGround, whatIsPlayer;
+
+    private int health;
+    //Patroling
+    public Vector3 walkPoint;
+    bool walkPointSet;
+    public float walkPointRange;
+
+    //Attacking
+    public float timeBetweenAttacks;
+    bool alreadyAttacked;
+    public GameObject projectile;
+
+    //states
+    public float sightRange, attackRange;
+    public bool playerInSightRange, playerInAttackRange;
+
+    private void Awake()
     {
-        FindPlayer();
+        player = GameObject.Find("player").transform;
+        agent = GetComponent<NavMeshAgent>();
+    }
+    private void Update()
+    {
+        //check for sight and attack range
+        playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
+        playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
+
+
+        if (!playerInSightRange && !playerInAttackRange) Patroling();
+        if (playerInSightRange && !playerInAttackRange) ChasePlayer();
+        if (!playerInAttackRange && playerInSightRange) AttackPlayer();
+
+
+    }
+    private void Patroling()
+    {
+        if (!walkPointSet) SearchWalkPoint();
+
+        if (walkPointSet)
+            agent.SetDestination(walkPoint);
+
+        Vector3 distanceToWalkPoint = transform.position - walkPoint;
+
+        // walkpoint reachted
+        if (distanceToWalkPoint.magnitude < 1f)
+            walkPointSet = false;
+    }
+    private void SearchWalkPoint()
+    {
+        // calculate random point in range
+        float randomZ = Random.Range(-walkPointRange, walkPointRange);
+        float randomX = Random.Range(-walkPointRange, walkPointRange);
+
+        walkPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
+
+        if (Physics.Raycast(walkPoint, -transform.up, 2f, whatIsGround))
+            walkPointSet = true;
+    }
+    private void ChasePlayer()
+    {
+        agent.SetDestination(player.position);
+    }
+    private void AttackPlayer()
+    {
+        //make sure enemy doesnt move
+        agent.SetDestination(transform.position);
+
+        transform.LookAt(player);
+
+        if (!alreadyAttacked)
+        {
+            // attack player
+            Rigidbody rb = Instantiate(projectile, transform.position, Quaternion.identity).GetComponent<Rigidbody>();
+
+            rb.AddForce(transform.forward * 32f, ForceMode.Impulse);
+            rb.AddForce(transform.up * 8f, ForceMode.Impulse);
+            //
+            alreadyAttacked = true;
+            Invoke(nameof(ResetAttack), timeBetweenAttacks);
+        }
+    }
+    private void ResetAttack()
+    {
+        alreadyAttacked = false;
     }
 
-    private void FixedUpdate()
+    public void TakeDamage(int damage)
     {
-        if (playerTransform != null)
-        {
-            var step = speed * Time.deltaTime;
-            transform.position = Vector3.MoveTowards(transform.position, playerTransform.position, step);
-        }
-        else
-        {
-            FindPlayer();
-        }
+        health -= damage;
+
+        if (health <= 0) Invoke(nameof(DestroyEnemy), .5f);
+
     }
-
-    private void FindPlayer()
+    private void DestroyEnemy()
     {
-        GameObject playerObject = GameObject.FindWithTag("Player"); // Assuming the player has the tag "Player"
-
-        if (playerObject != null)
-        {
-            playerTransform = playerObject.transform;
-        }
-        else
-        {
-            Debug.LogError("Player not found. Make sure the player has the tag 'Player'.");
-        }
+        Destroy(gameObject);
     }
 }

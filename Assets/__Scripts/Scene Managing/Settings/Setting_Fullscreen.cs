@@ -1,18 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
+using TMPro;
 public class Setting_Fullscreen : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private TextMeshProUGUI onOffText;
+    [SerializeField] private Image offIndicator;
+    [SerializeField] private Image onIndicator;
+    public void SetFullscreen(bool input)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if (input)
+        {
+            Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, true);
+            SettingsManager.instance.fullscreen = true;
+            onOffText.text = "ON";
+            offIndicator.enabled = false;
+            onIndicator.enabled = true;
+        }
+        else if (!input)
+        {
+            Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, false);
+            SettingsManager.instance.fullscreen = false;
+            onOffText.text = "OFF";
+            offIndicator.enabled = true;
+            onIndicator.enabled = false;
+        }
     }
 }
