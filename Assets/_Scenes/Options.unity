@@ -130,54 +130,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 806756857}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &43482980
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 43482982}
-  - component: {fileID: 43482983}
-  m_Layer: 0
-  m_Name: SettingsManager Singleton
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &43482982
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 43482980}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 242.26773, y: 116.983665, z: 63.092484}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &43482983
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 43482980}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 32b056f75b640644dab7b6b512b8dc1b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fullscreen: 1
-  playerSens: 0.5
-  musicVolume: 0.5
-  soundEffectVolume: 0.5
 --- !u!1001 &48566134
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -927,7 +879,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 142436079}
         m_TargetAssemblyTypeName: MoveToScene, Assembly-CSharp
-        m_MethodName: MoveToSceneIndex
+        m_MethodName: MoveToSceneName
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10154,6 +10106,69 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1896832431}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1499674653
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1499674656}
+  - component: {fileID: 1499674655}
+  - component: {fileID: 1499674654}
+  m_Layer: 0
+  m_Name: SettingsManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1499674654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1499674653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69eb0d2ba6fa8104297d8fa7e00391dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerHealth: 100
+  inventoryGameobjects: []
+--- !u!114 &1499674655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1499674653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32b056f75b640644dab7b6b512b8dc1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fullscreen: 1
+  playerSens: 0.5
+  musicVolume: 0.5
+  soundEffectVolume: 0.5
+--- !u!4 &1499674656
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1499674653}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 242.26773, y: 116.983665, z: 63.092484}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1503214017 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 456254, guid: f65b497ff807d95439b38e7da2fab667,
@@ -10836,6 +10851,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bc6a7ef69a42cd428dc2f2669198ceb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onOffText: {fileID: 0}
+  offIndicator: {fileID: 0}
+  onIndicator: {fileID: 0}
 --- !u!1001 &1557915998
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12565,11 +12583,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbeaf3c9a21c6114885fdf68a8ddb560, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onOffText: {fileID: 398129320}
-  offIndicator: {fileID: 1439119384}
-  onIndicator: {fileID: 259328369}
-  leftArrow: {fileID: 1463419002}
-  rightArrow: {fileID: 714790931}
   sensSlider: {fileID: 143005624}
   sensText: {fileID: 339417105}
 --- !u!4 &1865789513
@@ -14124,8 +14137,8 @@ SceneRoots:
   m_Roots:
   - {fileID: 1077227925}
   - {fileID: 1449293790}
-  - {fileID: 43482982}
   - {fileID: 1467259624}
   - {fileID: 195492715}
   - {fileID: 1865789513}
   - {fileID: 941008425}
+  - {fileID: 1499674656}

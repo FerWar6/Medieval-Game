@@ -17,7 +17,7 @@ public class Interactable_MagicWall : Interactable
     }
     private void Update()
     {
-        if (PlayerInventory.instance.ListContainsItemByName("Keyitem_Jewel"))
+        if (PlayerData.instance.ListContainsItemByName("Keyitem_Jewel"))
         {
             wall.promptMessage = message;
         }
@@ -25,9 +25,9 @@ public class Interactable_MagicWall : Interactable
     protected override void Interact()
     {
 
-        if (PlayerInventory.instance.ListContainsItemByName("Keyitem_Jewel"))
+        if (PlayerData.instance.ListContainsItemByName("Keyitem_Jewel"))
         {
-            PlayerInventory.instance.DestroyAllItemsInInventory();
+            PlayerData.instance.DestroyAllItemsInInventory();
             anim.SetTrigger("OpenDoor");
             DestroyInteractable();
         }

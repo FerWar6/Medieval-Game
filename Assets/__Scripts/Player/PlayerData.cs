@@ -1,10 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class PlayerInventory : MonoBehaviour
+public class PlayerData : MonoBehaviour
 {
-    public static PlayerInventory instance { get; private set; }
+    public static PlayerData instance { get; private set; }
+
+    [HideInInspector] public int playerHealth = 100;
+
+    public List<GameObject> inventoryGameobjects;
 
     private void Awake()
     {
@@ -18,8 +23,6 @@ public class PlayerInventory : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
     }
-
-    public List<GameObject> inventoryGameobjects;
 
     void Start()
     {
@@ -49,5 +52,29 @@ public class PlayerInventory : MonoBehaviour
         }
 
         return false;
+    }
+
+    public void ModifyPlayerHealth(int number, bool add)
+    {
+        if (add)
+        {
+            playerHealth += number;
+        }
+        else
+        {
+            playerHealth -= number;
+            if (playerHealth <= 0)
+                OnPlayerDead();
+        }
+    }
+    public void ResetPlayerHealth()
+    {
+        playerHealth = 100;
+        Debug.Log("Reset Health");
+    }
+    private void OnPlayerDead()
+    {
+        SceneManager.LoadScene("DeathScreen");
+        ResetPlayerHealth();
     }
 }

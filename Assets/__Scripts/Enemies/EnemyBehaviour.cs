@@ -3,6 +3,8 @@ using UnityEngine.AI;
 
 public class EnemyBehaviour : MonoBehaviour
 {
+    public bool lockEnemyForTesting = false;
+
     public NavMeshAgent agent;
 
     public Transform player;
@@ -10,6 +12,7 @@ public class EnemyBehaviour : MonoBehaviour
     public LayerMask whatIsGround, whatIsPlayer;
 
     public int health;
+
     //Patroling
     public Vector3 walkPoint;
     bool walkPointSet;
@@ -26,7 +29,7 @@ public class EnemyBehaviour : MonoBehaviour
 
     private void Awake()
     {
-        player = GameObject.Find("player").transform;
+        player = GameObject.Find("Player").transform;
         agent = GetComponent<NavMeshAgent>();
     }
     private void Update()
@@ -35,12 +38,17 @@ public class EnemyBehaviour : MonoBehaviour
         playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
         playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
 
-
-        if (!playerInSightRange && !playerInAttackRange) Patroling();
-        if (playerInSightRange && !playerInAttackRange) ChasePlayer();
-        if (playerInAttackRange && playerInSightRange) AttackPlayer();
-
-
+        if (!lockEnemyForTesting)
+        {
+            if (!playerInSightRange && !playerInAttackRange) Patroling();
+            if (playerInSightRange && !playerInAttackRange) ChasePlayer();
+            if (playerInAttackRange && playerInSightRange) AttackPlayer();
+        }
+        DrawRaycast(transform.forward, Color.red);
+        DrawRaycast(Quaternion.Euler(0, -22.5f, 0) * transform.forward, Color.green);
+        DrawRaycast(Quaternion.Euler(0, -45f, 0) * transform.forward, Color.blue);
+        DrawRaycast(Quaternion.Euler(0, 22.5f, 0) * transform.forward, Color.yellow);
+        DrawRaycast(Quaternion.Euler(0, 45f, 0) * transform.forward, Color.cyan);
     }
     private void Patroling()
     {
@@ -104,5 +112,16 @@ public class EnemyBehaviour : MonoBehaviour
     private void DestroyEnemy()
     {
         Destroy(gameObject);
+    }
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, attackRange);
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, sightRange);
+    }
+    void DrawRaycast(Vector3 direction, Color color)
+    {
+        Debug.DrawRay(transform.position, direction * 5f, color);
     }
 }

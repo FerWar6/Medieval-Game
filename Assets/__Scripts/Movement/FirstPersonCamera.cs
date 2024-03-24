@@ -31,6 +31,10 @@ public class FirstPersonCamera : MonoBehaviour
 
         player.Rotate(Vector3.up * inputX);
     }
+    private void FixedUpdate()
+    {
+        cam.fieldOfView = SettingsManager.instance.playerFOV;
+    }
     private void OnDisable()
     {
         Cursor.visible = true;

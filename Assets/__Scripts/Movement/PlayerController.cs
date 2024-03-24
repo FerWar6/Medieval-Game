@@ -80,10 +80,12 @@ public class PlayerController : MonoBehaviour
         if (sprinting)
         {
             currentSpeed = sprintSpeed;
+            SettingsManager.instance.playerFOV = 65f;
         }
         else
         {
             currentSpeed = walkSpeed;
+            SettingsManager.instance.playerFOV = 60f;
         }
 
     }

@@ -13,6 +13,8 @@ public class SettingsManager : MonoBehaviour
     [HideInInspector] public float musicVolume = 0.5f;
     [HideInInspector] public float soundEffectVolume = 0.5f;
 
+    [HideInInspector] public float playerFOV = 60f;
+
 
     private void Awake()
     {
@@ -25,5 +27,9 @@ public class SettingsManager : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(gameObject);
         }
+    }
+    public void SetPlayerFOV(float fov)
+    {
+        playerFOV = fov;
     }
 }
