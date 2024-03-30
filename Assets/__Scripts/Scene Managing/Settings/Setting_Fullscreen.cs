@@ -6,6 +6,10 @@ public class Setting_Fullscreen : MonoBehaviour
     [SerializeField] private TextMeshProUGUI onOffText;
     [SerializeField] private Image offIndicator;
     [SerializeField] private Image onIndicator;
+    private void Start()
+    {
+        SetFullscreen(SettingsManager.instance.fullscreen);
+    }
     public void SetFullscreen(bool input)
     {
         if (input)

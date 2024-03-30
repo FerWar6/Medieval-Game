@@ -13,7 +13,7 @@ public class ExitGame : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            SceneManager.LoadScene("MainMenu");
+            Application.Quit();
 
         }
         if (Input.GetKeyDown(KeyCode.R))

@@ -3,13 +3,22 @@ using UnityEngine;
 
 public class PlayerHealthSlider : MonoBehaviour
 {
-    Slider playerHealthSlider;
+    Slider healthBar;
+
     private void Start()
     {
-        playerHealthSlider = GetComponent<Slider>();
+        healthBar = GetComponent<Slider>();
+        UpdateHealthBar();
+        PlayerData.instance.OnHealthChanged.AddListener(UpdateHealthBar);
     }
-    private void FixedUpdate()
+
+    private void OnDestroy()
     {
-        playerHealthSlider.value = PlayerData.instance.playerHealth;
+        PlayerData.instance.OnHealthChanged.RemoveListener(UpdateHealthBar);
+    }
+
+    private void UpdateHealthBar()
+    {
+        healthBar.value = PlayerData.instance.playerHealth;
     }
 }

@@ -7,17 +7,20 @@ public class SettingsManager : MonoBehaviour
 {
     public static SettingsManager instance { get; private set; }
 
-    [HideInInspector] public bool fullscreen = true;
+    public bool gamePaused = false;
 
-    [HideInInspector] public float playerSens = 0.5f;
-    [HideInInspector] public float musicVolume = 0.5f;
-    [HideInInspector] public float soundEffectVolume = 0.5f;
+    public bool fullscreen = true;
 
-    [HideInInspector] public float playerFOV = 60f;
+    public float playerSens = 0.98f;
+    public int musicVolume = 40;
+    public int soundEffectVolume = 40;
+
+    public float playerFOV = 60f;
 
 
     private void Awake()
     {
+        Cursor.visible = true;
         if (instance != null && instance != this)
         {
             Destroy(gameObject);
@@ -31,5 +34,18 @@ public class SettingsManager : MonoBehaviour
     public void SetPlayerFOV(float fov)
     {
         playerFOV = fov;
+    }
+    public void PauseGame()
+    {
+        gamePaused = true;
+        Time.timeScale = 0f;
+        Cursor.visible = true;
+    }
+    public void ResumeGame()
+    {
+        gamePaused = false;
+        Time.timeScale = 1f;
+        Cursor.visible = false;
+
     }
 }

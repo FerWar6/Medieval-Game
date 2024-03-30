@@ -1,15 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 public class PlayerData : MonoBehaviour
 {
     public static PlayerData instance { get; private set; }
 
-    [HideInInspector] public int playerHealth = 100;
+    public int playerHealth = 100;
 
     public List<GameObject> inventoryGameobjects;
+
+    public UnityEvent OnHealthChanged = new UnityEvent();
 
     private void Awake()
     {
@@ -66,6 +69,7 @@ public class PlayerData : MonoBehaviour
             if (playerHealth <= 0)
                 OnPlayerDead();
         }
+        OnHealthChanged.Invoke();
     }
     public void ResetPlayerHealth()
     {

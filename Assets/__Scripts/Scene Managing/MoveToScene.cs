@@ -10,6 +10,5 @@ public class MoveToScene : MonoBehaviour
     public void MoveToSceneName()
     {
         SceneManager.LoadScene(sceneName);
-        Debug.Log(sceneName);
     }
 }

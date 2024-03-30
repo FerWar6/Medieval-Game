@@ -7,7 +7,7 @@ public class FirstPersonCamera : MonoBehaviour
 {
     public Camera cam;
     [SerializeField] Transform player;
-    [HideInInspector] float mouseSens = 1;
+    [HideInInspector] float mouseSens = 0.2f;
     float cameraVerticalRotation = 0;
 
     void Start()
@@ -21,15 +21,18 @@ public class FirstPersonCamera : MonoBehaviour
 
     void Update()
     {
-        Vector2 mouseDelta = Mouse.current.delta.ReadValue();
-        float inputX = mouseDelta.x * mouseSens;
-        float inputY = mouseDelta.y * mouseSens;
+        if (!SettingsManager.instance.gamePaused)
+        {
+            Vector2 mouseDelta = Mouse.current.delta.ReadValue();
+            float inputX = mouseDelta.x * mouseSens;
+            float inputY = mouseDelta.y * mouseSens;
 
-        cameraVerticalRotation -= inputY;
-        cameraVerticalRotation = Mathf.Clamp(cameraVerticalRotation, -90f, 90f);
-        transform.localEulerAngles = new Vector3(cameraVerticalRotation, 0, 0);
+            cameraVerticalRotation -= inputY;
+            cameraVerticalRotation = Mathf.Clamp(cameraVerticalRotation, -90f, 90f);
+            transform.localEulerAngles = new Vector3(cameraVerticalRotation, 0, 0);
 
-        player.Rotate(Vector3.up * inputX);
+            player.Rotate(Vector3.up * inputX);
+        }
     }
     private void FixedUpdate()
     {

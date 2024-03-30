@@ -11579,7 +11579,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &695676511
 Transform:
   m_ObjectHideFlags: 0
@@ -21562,8 +21562,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fullscreen: 1
   playerSens: 0.5
-  musicVolume: 0.5
-  soundEffectVolume: 0.5
+  musicVolume: 0
+  soundEffectVolume: 0
   playerFOV: 60
 --- !u!114 &1347073484
 MonoBehaviour:
@@ -29914,7 +29914,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1900091537
 Transform:
   m_ObjectHideFlags: 0
@@ -33504,7 +33504,7 @@ PrefabInstance:
     - target: {fileID: 8266970969803610843, guid: 9a0f021e505e50d4facacf1bea5f0799,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -5.52
+      value: -17.25
       objectReference: {fileID: 0}
     - target: {fileID: 8266970969803610843, guid: 9a0f021e505e50d4facacf1bea5f0799,
         type: 3}
@@ -33514,7 +33514,7 @@ PrefabInstance:
     - target: {fileID: 8266970969803610843, guid: 9a0f021e505e50d4facacf1bea5f0799,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 48.74
+      value: 5.14
       objectReference: {fileID: 0}
     - target: {fileID: 8266970969803610843, guid: 9a0f021e505e50d4facacf1bea5f0799,
         type: 3}

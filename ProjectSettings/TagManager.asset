@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Ground
   layers:
   - Default
   - TransparentFX
@@ -16,8 +17,8 @@ TagManager:
   - 
   - Ground
   - Player
-  - 
-  - 
+  - EnemyProjectile
+  - Enemy
   - 
   - 
   - 
@@ -40,4 +41,13 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Hover
+    uniqueID: 3927242767
+    locked: 0
+  - name: AboveHover
+    uniqueID: 25436159
+    locked: 0
+  - name: TestAbove
+    uniqueID: 391332271
     locked: 0

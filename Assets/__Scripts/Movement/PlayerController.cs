@@ -25,7 +25,6 @@ public class PlayerController : MonoBehaviour
     private bool jumped = false;
     private bool sprinting = false;
 
-    private bool canFire = true;
     private void Start()
     {
         controller = gameObject.GetComponent<CharacterController>();
@@ -44,13 +43,6 @@ public class PlayerController : MonoBehaviour
     public void OnSprint(InputAction.CallbackContext context)
     {
         sprinting = context.action.triggered;
-    }
-    public void OnClick(InputAction.CallbackContext context)
-    {
-        if (context.performed && canFire)
-        {
-            StartCoroutine(FireWithDelay());
-        }
     }
 
     void Update()
@@ -88,19 +80,5 @@ public class PlayerController : MonoBehaviour
             SettingsManager.instance.playerFOV = 60f;
         }
 
-    }
-    IEnumerator FireWithDelay()
-    {
-        canFire = false;
-
-        yield return new WaitForSeconds(0.2f);
-
-        Fire();
-
-        canFire = true;
-    }
-    private void Fire()
-    {
-        Debug.Log("fired");
     }
 }

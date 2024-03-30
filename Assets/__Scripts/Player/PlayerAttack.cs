@@ -1,26 +1,50 @@
-using System.Collections;
-using System.Collections.Generic;
+using UnityEngine.InputSystem;
 using UnityEngine;
+using System.Collections;
 
 public class PlayerAttack : MonoBehaviour
 {
-    [SerializeField] float attackCoolDown;
-    void Update()
+    [SerializeField] GoldenBallAnimation ballAnimator;
+    private bool canFire = true;
+
+    public LayerMask enemyLayerMask;
+    [SerializeField] float attackCooldown;
+    public void OnClick(InputAction.CallbackContext context)
     {
-        PerformRaycast(transform.forward);
+        if (context.performed && canFire)
+        {
+            StartCoroutine(FireWithDelay());
+        }
+    }
+
+    IEnumerator FireWithDelay()
+    {
+        canFire = false;
+        yield return new WaitForSeconds(0.05f);
+        Fire();
+        canFire = true;
+    }
+
+    private void Fire()
+    {
+        PerformRaycast(Camera.main.transform.forward);
     }
     void PerformRaycast(Vector3 direction)
     {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, direction, out hit))
+        if (Physics.Raycast(Camera.main.transform.position, direction, out hit))
         {
-            Renderer renderer = hit.collider.GetComponent<Renderer>();
-            if (renderer != null)
+
+            ballAnimator.SetEndPosition(hit.point);
+
+            if (LayerMask.LayerToName(hit.collider.gameObject.layer) == "Enemy")
             {
-            }
-            if(hit.collider.gameObject.name == "TestEnemy")
-            {
-                Debug.Log("hit enemy");
+                EnemyBehaviour enemyBehaviour = hit.collider.GetComponent<EnemyBehaviour>();
+                if (enemyBehaviour != null)
+                {
+                    enemyBehaviour.TakeDamage(40);
+                    Debug.Log("Enemy in sight. Dealt damage to enemy.");
+                }
             }
         }
     }
