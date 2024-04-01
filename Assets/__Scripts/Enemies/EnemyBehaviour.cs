@@ -1,9 +1,14 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class EnemyBehaviour : MonoBehaviour
 {
     private Color testColor;
+
+    [SerializeField] EnemyUI enemyUI;
+
     [SerializeField] bool lockEnemyForTesting = false;
 
     [SerializeField] NavMeshAgent agent;
@@ -18,6 +23,12 @@ public class EnemyBehaviour : MonoBehaviour
     [SerializeField] Vector3 walkPoint;
     bool walkPointSet;
     [SerializeField] float walkPointRange;
+    private float timeToReachTarget;
+    float proximityThreshold = 1f;
+    private bool cooldownActive = false;
+    [SerializeField] float cooldownDuration = 2f;
+    private float cooldownTimer = 0f;
+
 
     //Attacking
     [SerializeField] float timeBetweenAttacks;
@@ -28,6 +39,8 @@ public class EnemyBehaviour : MonoBehaviour
     [SerializeField] float sightRange, attackRange;
     [SerializeField] bool playerInSightRange, playerInAttackRange;
 
+    //UI
+    private bool canChangeExclamation = true;
     private void Awake()
     {
         player = GameObject.Find("Player").transform;
@@ -36,8 +49,8 @@ public class EnemyBehaviour : MonoBehaviour
     private void Update()
     {
         //check for sight and attack range
-        playerInSightRange = LookForPlayer();
-        playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
+        playerInSightRange = LookForPlayer(sightRange);
+        playerInAttackRange = LookForPlayer(attackRange);
 
         if (!lockEnemyForTesting)
         {
@@ -45,29 +58,59 @@ public class EnemyBehaviour : MonoBehaviour
             if (playerInSightRange && !playerInAttackRange) ChasePlayer();
             if (playerInAttackRange && playerInSightRange) AttackPlayer();
         }
-
-        if (playerInSightRange)
-        {
-            testColor = Color.red;
-        }
-        else
-        {
-            testColor = Color.green;
-        }
     }
+
+
     private void Patroling()
     {
-        if (!walkPointSet) SearchWalkPoint();
+        SetExclamationMark(false);
+
+        if (!walkPointSet)
+        {
+            // Check if the search cooldown is active
+            if (!cooldownActive)
+            {
+                SearchWalkPoint();
+                timeToReachTarget = 0f;
+            }
+        }
 
         if (walkPointSet)
+        {
             agent.SetDestination(walkPoint);
+            timeToReachTarget += Time.deltaTime;
 
-        Vector3 distanceToWalkPoint = transform.position - walkPoint;
+            // Check if the enemy got stuck
+            if (timeToReachTarget > 4f)
+            {
+                Debug.Log("Enemy got stuck");
+                walkPointSet = false;
+                cooldownActive = true; // Activate search cooldown
+                return; // Enemy remains still during cooldown
+            }
 
-        // walkpoint reachted
-        if (distanceToWalkPoint.magnitude < 1f)
-            walkPointSet = false;
+            Vector3 distanceToWalkPoint = transform.position - walkPoint;
+
+            if (distanceToWalkPoint.magnitude < 1f)
+            {
+                walkPointSet = false;
+                cooldownActive = true; // Activate search cooldown
+            }
+        }
+
+        // Check if the search cooldown is active
+        if (cooldownActive)
+        {
+            // Wait for the search cooldown duration
+            cooldownTimer += Time.deltaTime;
+            if (cooldownTimer >= cooldownDuration)
+            {
+                cooldownActive = false;
+                cooldownTimer = 0f;
+            }
+        }
     }
+
     private void SearchWalkPoint()
     {
         // calculate random point in range
@@ -76,15 +119,30 @@ public class EnemyBehaviour : MonoBehaviour
 
         walkPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
 
-        if (Physics.Raycast(walkPoint, -transform.up, 2f, whatIsGround))
+        if (Physics.Raycast(walkPoint, -transform.up, 2f, whatIsGround) && IsNearNavMesh(walkPoint, 0.25f))
             walkPointSet = true;
     }
+    public bool IsNearNavMesh(Vector3 position, float minDistanceToEdge)
+    {
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(position, out hit, proximityThreshold, NavMesh.AllAreas))
+        {
+            if (NavMesh.FindClosestEdge(position, out hit, NavMesh.AllAreas))
+            {
+                return hit.distance >= minDistanceToEdge;
+            }
+        }
+        return false;
+    }
+
     private void ChasePlayer()
     {
+        SetExclamationMark(true);
         agent.SetDestination(player.position);
     }
     private void AttackPlayer()
     {
+        SetExclamationMark(true);
         //make sure enemy doesnt move
         agent.SetDestination(transform.position);
 
@@ -94,8 +152,14 @@ public class EnemyBehaviour : MonoBehaviour
         if (!alreadyAttacked)
         {
             // attack player
-            Vector3 newPos = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
-            Rigidbody rb = Instantiate(projectile, newPos, Quaternion.identity).GetComponent<Rigidbody>();
+            Vector3 directionToPlayer = (player.position - transform.position).normalized;
+
+            Vector3 newPos = new Vector3(transform.position.x, transform.position.y + 0.75f, transform.position.z);
+            GameObject newProjectile = Instantiate(projectile, newPos, Quaternion.identity);
+
+            newProjectile.transform.rotation = Quaternion.LookRotation(directionToPlayer);
+
+            Rigidbody rb = newProjectile.GetComponent<Rigidbody>();
 
             rb.AddForce(transform.forward * 10f, ForceMode.Impulse);
             rb.AddForce(transform.up * 3f, ForceMode.Impulse);
@@ -124,53 +188,38 @@ public class EnemyBehaviour : MonoBehaviour
     {
         Vector3 middleOfEnemy = new Vector3(transform.position.x, transform.position.y + 0.8f, transform.position.z);
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, attackRange);
-
         Gizmos.DrawRay(middleOfEnemy, transform.forward * sightRange);
+        Gizmos.color = Color.green;
+        Gizmos.DrawRay(middleOfEnemy, transform.forward * attackRange);
 
     }
     void DrawRaycast(Vector3 direction, Color color)
     {
         Debug.DrawRay(transform.position, direction * sightRange, color);
     }
-
-    bool LookForPlayer2()
-    {
-        Vector3 middleOfEnemy = new Vector3(transform.position.x, transform.position.y + 0.8f, transform.position.z);
-        Vector3 forwardDirection = transform.forward;
-
-        // Cast a ray in the forward direction
-        RaycastHit hitInfo;
-        if (Physics.Raycast(middleOfEnemy, forwardDirection, out hitInfo, sightRange, whatIsPlayer))
-        {
-            Debug.Log("Raycast hit: " + hitInfo.collider.gameObject.name);
-            Debug.DrawRay(middleOfEnemy, forwardDirection * sightRange, testColor);
-            return true; // Hit something
-        }
-
-        // No hit
-        Debug.DrawRay(middleOfEnemy, forwardDirection * sightRange, testColor);
-        return false;
-    }
-    bool LookForPlayer()
+    bool LookForPlayer(float range)
     {
         Vector3 middleOfEnemy = new Vector3(transform.position.x, transform.position.y + 0.8f, transform.position.z);
 
         Vector3[] directions = {
         transform.forward,
         Quaternion.Euler(0, -45f, 0) * transform.forward,
-        Quaternion.Euler(0, -33.75f, 0) * transform.forward,
+        Quaternion.Euler(0, -37.5f, 0) * transform.forward,
+        Quaternion.Euler(0, -30f, 0) * transform.forward,
         Quaternion.Euler(0, -22.5f, 0) * transform.forward,
-        Quaternion.Euler(0, -11.25f, 0) * transform.forward,
+        Quaternion.Euler(0, -15f, 0) * transform.forward,
+        Quaternion.Euler(0, -7.5f, 0) * transform.forward,
         Quaternion.Euler(0, 45f, 0) * transform.forward,
-        Quaternion.Euler(0, 33.75f, 0) * transform.forward,
+        Quaternion.Euler(0, 37.5f, 0) * transform.forward,
+        Quaternion.Euler(0, 30f, 0) * transform.forward,
         Quaternion.Euler(0, 22.5f, 0) * transform.forward,
-        Quaternion.Euler(0, 11.25f, 0) * transform.forward
+        Quaternion.Euler(0, 15f, 0) * transform.forward,
+        Quaternion.Euler(0, 7.5f, 0) * transform.forward
     };
 
         foreach (Vector3 direction in directions)
         {
-            if (Physics.Raycast(middleOfEnemy, direction, sightRange, whatIsPlayer))
+            if (Physics.Raycast(middleOfEnemy, direction, range, whatIsPlayer))
             {
                 return true;
             }
@@ -178,5 +227,18 @@ public class EnemyBehaviour : MonoBehaviour
 
         return false;
     }
-
+    void SetExclamationMark(bool active)
+    {
+        if (canChangeExclamation)
+        {
+            StartCoroutine(ChangeExclamationDelay(active));
+        }
+    }
+    private IEnumerator ChangeExclamationDelay(bool active)
+    {
+        canChangeExclamation = false;
+        yield return new WaitForSeconds(0.25f);
+        enemyUI.SetExclamationMark(active);
+        canChangeExclamation = true;
+    }
 }
