@@ -19649,7 +19649,7 @@ PrefabInstance:
     - target: {fileID: 7060169107764397258, guid: 02015b24875338344923a5c5e4c4e370,
         type: 3}
       propertyPath: sceneName
-      value: DeathScreen
+      value: Level1
       objectReference: {fileID: 0}
     - target: {fileID: 9029547273819330945, guid: 02015b24875338344923a5c5e4c4e370,
         type: 3}

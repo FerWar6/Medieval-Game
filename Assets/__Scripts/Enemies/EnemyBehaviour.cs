@@ -26,7 +26,7 @@ public class EnemyBehaviour : MonoBehaviour
     private float timeToReachTarget;
     float proximityThreshold = 1f;
     private bool cooldownActive = false;
-    [SerializeField] float cooldownDuration = 2f;
+    [SerializeField] float cooldownDuration = 1f;
     private float cooldownTimer = 0f;
 
 

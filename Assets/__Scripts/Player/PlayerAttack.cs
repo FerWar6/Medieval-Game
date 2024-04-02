@@ -4,10 +4,11 @@ using System.Collections;
 
 public class PlayerAttack : MonoBehaviour
 {
-    [SerializeField] GoldenBallAnimation ballAnimator;
+    //[SerializeField] GoldenBallAnimation ballAnimator;
+    [SerializeField] GameObject projectile;
     private bool canFire = true;
 
-    public LayerMask enemyLayerMask;
+    //public LayerMask enemyLayerMask;
     [SerializeField] float attackCooldown;
     public void OnClick(InputAction.CallbackContext context)
     {
@@ -20,23 +21,20 @@ public class PlayerAttack : MonoBehaviour
     IEnumerator FireWithDelay()
     {
         canFire = false;
-        yield return new WaitForSeconds(0.05f);
+        yield return new WaitForSeconds(0.5f);
         Fire();
         canFire = true;
     }
 
     private void Fire()
     {
-        PerformRaycast(Camera.main.transform.forward);
+        ShootFireBall(Camera.main.transform.forward);
     }
     void PerformRaycast(Vector3 direction)
     {
         RaycastHit hit;
         if (Physics.Raycast(Camera.main.transform.position, direction, out hit))
         {
-
-            ballAnimator.SetEndPosition(hit.point);
-
             if (LayerMask.LayerToName(hit.collider.gameObject.layer) == "Enemy")
             {
                 EnemyBehaviour enemyBehaviour = hit.collider.GetComponent<EnemyBehaviour>();
@@ -47,5 +45,14 @@ public class PlayerAttack : MonoBehaviour
                 }
             }
         }
+    }
+    void ShootFireBall(Vector3 direction)
+    {
+        Vector3 newPos = Camera.main.transform.position;
+        GameObject newProjectile = Instantiate(projectile, newPos, Quaternion.identity);
+
+        Rigidbody rb = newProjectile.GetComponent<Rigidbody>();
+
+        rb.AddForce(transform.forward * 10f, ForceMode.Impulse);
     }
 }
