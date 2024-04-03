@@ -4,7 +4,7 @@ using System.Collections;
 
 public class PlayerAttack : MonoBehaviour
 {
-    //[SerializeField] GoldenBallAnimation ballAnimator;
+    [SerializeField] AudioClip hitSound;
     [SerializeField] GameObject projectile;
     private bool canFire = true;
 
@@ -29,6 +29,10 @@ public class PlayerAttack : MonoBehaviour
     private void Fire()
     {
         ShootFireBall(Camera.main.transform.forward);
+        if (hitSound != null)
+        {
+            PlaySound();
+        }
     }
     void PerformRaycast(Vector3 direction)
     {
@@ -51,8 +55,14 @@ public class PlayerAttack : MonoBehaviour
         Vector3 newPos = Camera.main.transform.position;
         GameObject newProjectile = Instantiate(projectile, newPos, Quaternion.identity);
 
+        newProjectile.transform.rotation = Camera.main.transform.rotation;
+
         Rigidbody rb = newProjectile.GetComponent<Rigidbody>();
 
         rb.AddForce(transform.forward * 10f, ForceMode.Impulse);
+    }
+    private void PlaySound()
+    {
+        //AudioManager.instance.SetAudioClip(hitSound, transform.position);
     }
 }

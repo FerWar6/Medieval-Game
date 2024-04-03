@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyProjectile : MonoBehaviour
 {
+    [SerializeField] AudioClip hitSound;
     [SerializeField] LayerMask groundLayerMask;
     [SerializeField] LayerMask playerLayerMask;
 
@@ -21,11 +22,19 @@ public class EnemyProjectile : MonoBehaviour
     {
         if ((groundLayerMask & (1 << collision.gameObject.layer)) != 0)
         {
+            if (hitSound != null)
+            {
+                PlaySound();
+            }
             LockProjectile();
             StartCoroutine(DelayAndDestroy(0.5f));
         }
         if ((playerLayerMask & (1 << collision.gameObject.layer)) != 0)
         {
+            if (hitSound != null)
+            {
+                PlaySound();
+            }
             LockProjectile();
             PlayerData.instance.ModifyPlayerHealth(10, false);
             Camera.main.GetComponent<CamAnimation>().PlayBloodEffect();
@@ -73,6 +82,11 @@ public class EnemyProjectile : MonoBehaviour
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
         rb.useGravity = false;
+    }
+    private void PlaySound()
+    {
+        AudioManager.instance.SetAudioClip(hitSound, transform.position);
+        AlertManager.instance.SetAlertPos(transform.position);
     }
 }
 

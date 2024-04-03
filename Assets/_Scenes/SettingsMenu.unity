@@ -14205,8 +14205,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32b056f75b640644dab7b6b512b8dc1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gamePaused: 0
   fullscreen: 1
-  playerSens: 1.4
+  playerSens: 1
   musicVolume: 40
   soundEffectVolume: 40
   playerFOV: 60
@@ -14239,6 +14240,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerHealth: 100
   inventoryGameobjects: []
+  OnHealthChanged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1500998637
 GameObject:
   m_ObjectHideFlags: 0
