@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class PlayerAttackProjectile : MonoBehaviour
 {
-    [SerializeField] AudioClip hitSound;
+    [SerializeField] ParticleSystem explosion;
+    [SerializeField] ParticleSystem trail;
 
-    [SerializeField] LayerMask groundLayerMask;
+    [SerializeField] AudioClip hitSound;
+    [SerializeField] TrailAnimation trailAnim;
+
+    [SerializeField] LayerMask everythingNotPlayerLayerMask;
     [SerializeField] LayerMask enemyLayerMask;
 
-    private float maxLifetime = 5;
+    private float maxLifetime = 2.5f;
     private float lifeTime = 0;
-    private bool lockProjectile = false;
-    private bool ableToSetLastVariables = true;
+    private bool collided = true;
 
     private Rigidbody rb;
     void Start()
@@ -21,55 +24,57 @@ public class PlayerAttackProjectile : MonoBehaviour
     }
     private void Update()
     {
-        if(lifeTime < maxLifetime)
+        if (!collided)
         {
-            lifeTime += Time.deltaTime;
-        }
-        else
-        {
-            Destroy(gameObject);
+            if (lifeTime < maxLifetime)
+            {
+                lifeTime += Time.deltaTime;
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
         }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if ((groundLayerMask & (1 << collision.gameObject.layer)) != 0)
+        if ((everythingNotPlayerLayerMask & (1 << collision.gameObject.layer)) != 0)
         {
+            collided = true;
             if (hitSound != null)
             {
                 PlaySound();
             }
+            trail.Stop();
+
             LockProjectile();
-            Destroy(gameObject);
+            StartCoroutine(PlayParticleAndDestroy());
         }
         if ((enemyLayerMask & (1 << collision.gameObject.layer)) != 0)
         {
+            collided = true;
             if (hitSound != null)
             {
                 PlaySound();
             }
+            trail.Stop();
+
             LockProjectile();
             collision.gameObject.GetComponent<EnemyBehaviour>().TakeDamage(40);
-            Destroy(gameObject);
+            StartCoroutine(PlayParticleAndDestroy());
         }
     }
 
-    private IEnumerator PlayParticleAndDestroy(float delay)
+    private IEnumerator PlayParticleAndDestroy()
     {
-        yield return new WaitForSeconds(delay);
+        explosion.Play();
+        yield return new WaitUntil(() => !explosion.isPlaying);
         Destroy(gameObject);
-    }
-
-
-    private IEnumerator SetLastVariables(Quaternion rotation, Transform transform)
-    {
-        ableToSetLastVariables = false;
-        yield return new WaitForSeconds(0.02f);
-        ableToSetLastVariables = true;
     }
     private void LockProjectile()
     {
-        lockProjectile = true;
+        trailAnim.locked = true;
         GetComponent<SphereCollider>().enabled = false;
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;

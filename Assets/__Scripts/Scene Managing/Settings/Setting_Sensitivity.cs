@@ -56,7 +56,7 @@ public class Setting_Sensitivity : MonoBehaviour
         }
         else if (settingValue >= 11 && settingValue <= 20)
         {
-            sensSlider.value = (settingValue - 10) + 140;
+            sensSlider.value = settingValue + 130;
         }
 
         settingValue = Mathf.Round(settingValue * 100f) / 100f;

@@ -6,6 +6,8 @@ using System.Collections.Generic;
 public class PlayerAttack : MonoBehaviour
 {
     [SerializeField] List <AudioClip> fireBallSounds;
+    [SerializeField] Transform projectilePool;
+    [SerializeField] Animator fireballAnim;
 
     [SerializeField] GameObject projectile;
     private bool canFire = true;
@@ -26,12 +28,14 @@ public class PlayerAttack : MonoBehaviour
         Fire();
 
         yield return new WaitForSeconds(0.5f);
+        fireballAnim.Play("Idle");
         canFire = true;
     }
 
     private void Fire()
     {
         ShootFireBall(Camera.main.transform.forward);
+        fireballAnim.SetTrigger("regenFireball");
         if (fireBallSounds != null)
         {
             //PlayFireballSound();
@@ -56,7 +60,7 @@ public class PlayerAttack : MonoBehaviour
     void ShootFireBall(Vector3 direction)
     {
         Transform camTrans = Camera.main.transform;
-        GameObject newProjectile = Instantiate(projectile, camTrans.position, camTrans.rotation);
+        GameObject newProjectile = Instantiate(projectile, camTrans.position, camTrans.rotation, projectilePool);
 
         newProjectile.transform.rotation = Camera.main.transform.rotation;
 
