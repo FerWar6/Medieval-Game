@@ -1708,7 +1708,7 @@ GameObject:
   - component: {fileID: 5910987382159633289}
   - component: {fileID: 5173453532198226792}
   m_Layer: 0
-  m_Name: ExclimationMark
+  m_Name: Mark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1772,7 +1772,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 4963a2018a798b6489d3ff88356a3bc5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 2.56, y: 2.56}
@@ -2715,8 +2715,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93f67fcad82ff704f8c27a82db13f208, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyUI: {fileID: 6069612429224208893}
   lockEnemyForTesting: 0
+  health: 100
+  cooldownDuration: 1
   agent: {fileID: 2119031067333948719}
   player: {fileID: 0}
   whatIsGround:
@@ -2725,17 +2726,22 @@ MonoBehaviour:
   whatIsPlayer:
     serializedVersion: 2
     m_Bits: 1024
-  health: 120
+  whatIsAlert:
+    serializedVersion: 2
+    m_Bits: 8192
   walkPoint: {x: 0, y: 0, z: 0}
   walkPointRange: 5
-  cooldownDuration: 2
   timeBetweenAttacks: 0.5
   projectile: {fileID: 6830464998070339146, guid: e435fe20ec415ff48830635d06bbfd9e,
     type: 3}
-  sightRange: 10
-  attackRange: 6
+  investigationPoint: {x: 0, y: 0, z: 0}
+  sightRange: 7.5
+  attackRange: 5
+  alertRange: 10
   playerInSightRange: 0
   playerInAttackRange: 0
+  alertSourceInRange: 0
+  enemyUI: {fileID: 6069612429224208893}
 --- !u!195 &2119031067333948719
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2886,7 +2892,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19d7658023d45e6459bfae4edc6ae060, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  exclamationMark: {fileID: 5173453532198226792}
+  mark: {fileID: 5173453532198226792}
+  exclamationMark: {fileID: 21300000, guid: 4963a2018a798b6489d3ff88356a3bc5, type: 3}
+  questionMark: {fileID: 21300000, guid: 532cbdf86d309fe4f814cc740e60321e, type: 3}
 --- !u!1 &8524319604132626950
 GameObject:
   m_ObjectHideFlags: 0

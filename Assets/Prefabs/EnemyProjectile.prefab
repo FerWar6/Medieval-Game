@@ -101,7 +101,7 @@ MonoBehaviour:
     m_Bits: 512
   playerLayerMask:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 32768
 --- !u!1001 &8060308044845467503
 PrefabInstance:
   m_ObjectHideFlags: 0

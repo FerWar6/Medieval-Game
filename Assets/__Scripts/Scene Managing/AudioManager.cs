@@ -12,7 +12,7 @@ public class AudioManager : MonoBehaviour
 
     public GameObject audioSource;
 
-    public List <GameObject> audioSourceList = new List<GameObject>();
+    public List<GameObject> audioSourceList = new List<GameObject>();
 
 
     private void Awake()
@@ -77,7 +77,6 @@ public class AudioManager : MonoBehaviour
 
         sourceObject.transform.parent = inActiveAudioPool;
         audioSourse.clip = null;
-        //audioSourse.GetComponent<AudioSource>(SwitchStates());
     }
 
 }

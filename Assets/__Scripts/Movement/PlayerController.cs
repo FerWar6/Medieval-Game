@@ -25,6 +25,8 @@ public class PlayerController : MonoBehaviour
     private bool jumped = false;
     private bool sprinting = false;
 
+    private bool canLeaveAlert = true;
+
     private void Start()
     {
         controller = gameObject.GetComponent<CharacterController>();
@@ -71,6 +73,8 @@ public class PlayerController : MonoBehaviour
 
         if (sprinting)
         {
+            SetAlert(5);
+
             currentSpeed = sprintSpeed;
             SettingsManager.instance.playerFOV = 65f;
         }
@@ -80,5 +84,19 @@ public class PlayerController : MonoBehaviour
             SettingsManager.instance.playerFOV = 60f;
         }
 
+    }
+    void SetAlert(float cooldown)
+    {
+        if (canLeaveAlert)
+        {
+            StartCoroutine(ChangeUIDelay(cooldown));
+        }
+    }
+    private IEnumerator ChangeUIDelay(float cooldown)
+    {
+        canLeaveAlert = false;
+        AlertManager.instance.SetAlert(transform.position, cooldown);
+        yield return new WaitForSeconds(0.4f);
+        canLeaveAlert = true;
     }
 }

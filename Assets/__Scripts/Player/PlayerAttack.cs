@@ -1,10 +1,12 @@
 using UnityEngine.InputSystem;
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PlayerAttack : MonoBehaviour
 {
-    [SerializeField] AudioClip hitSound;
+    [SerializeField] List <AudioClip> fireBallSounds;
+
     [SerializeField] GameObject projectile;
     private bool canFire = true;
 
@@ -21,17 +23,18 @@ public class PlayerAttack : MonoBehaviour
     IEnumerator FireWithDelay()
     {
         canFire = false;
-        yield return new WaitForSeconds(0.5f);
         Fire();
+
+        yield return new WaitForSeconds(0.5f);
         canFire = true;
     }
 
     private void Fire()
     {
         ShootFireBall(Camera.main.transform.forward);
-        if (hitSound != null)
+        if (fireBallSounds != null)
         {
-            PlaySound();
+            //PlayFireballSound();
         }
     }
     void PerformRaycast(Vector3 direction)
@@ -52,17 +55,40 @@ public class PlayerAttack : MonoBehaviour
     }
     void ShootFireBall(Vector3 direction)
     {
-        Vector3 newPos = Camera.main.transform.position;
-        GameObject newProjectile = Instantiate(projectile, newPos, Quaternion.identity);
+        Transform camTrans = Camera.main.transform;
+        GameObject newProjectile = Instantiate(projectile, camTrans.position, camTrans.rotation);
 
         newProjectile.transform.rotation = Camera.main.transform.rotation;
 
         Rigidbody rb = newProjectile.GetComponent<Rigidbody>();
 
-        rb.AddForce(transform.forward * 10f, ForceMode.Impulse);
+        rb.AddForce(camTrans.forward * 25f, ForceMode.Impulse);
     }
-    private void PlaySound()
+
+    private void PlayFireballSound()
     {
-        //AudioManager.instance.SetAudioClip(hitSound, transform.position);
+        if(fireBallSounds != null)
+        {
+            int random = Random.Range(1, 4);
+            switch (random)
+            {
+                case 1:
+                    {
+                        AudioManager.instance.SetAudioClip(fireBallSounds[0], transform.position);
+                        break;
+                    }
+                case 2:
+                    {
+                        AudioManager.instance.SetAudioClip(fireBallSounds[1], transform.position);
+                        break;
+                    }
+                case 3:
+                    {
+                        AudioManager.instance.SetAudioClip(fireBallSounds[2], transform.position);
+                        break;
+                    }
+            }
+        }
+
     }
 }

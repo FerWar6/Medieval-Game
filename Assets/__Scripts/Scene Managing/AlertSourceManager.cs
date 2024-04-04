@@ -4,13 +4,17 @@ using UnityEngine;
 
 public class AlertSourceManager : MonoBehaviour
 {
-    public bool isActive = false;
-    void Start()
+    public float cooldown;
+    public float timeExisted;
+
+    private void FixedUpdate()
     {
-        //Destroy(gameObject, 3f);
+        cooldown -= Time.deltaTime;
+        timeExisted += Time.deltaTime;
     }
-    public void SwitchStates()
+    private void OnDisable()
     {
-        isActive = !isActive;
+        cooldown = 0;
+        timeExisted = 0;
     }
 }

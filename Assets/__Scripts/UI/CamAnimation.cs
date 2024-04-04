@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CamAnimation : MonoBehaviour
 {
-    [SerializeField] Animator anim;
+    private Animator anim;
     private void Start()
     {
         anim = GetComponent<Animator>();

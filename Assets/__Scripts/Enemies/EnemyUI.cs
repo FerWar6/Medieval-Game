@@ -5,10 +5,23 @@ using UnityEngine;
 
 public class EnemyUI : MonoBehaviour
 {
-    [SerializeField] SpriteRenderer exclamationMark;
+    [SerializeField] SpriteRenderer mark;
+    [SerializeField] Sprite exclamationMark;
+    [SerializeField] Sprite questionMark;
 
-    public void SetExclamationMark(bool on)
+    public void UIOff()
     {
-        exclamationMark.enabled = on;
+        mark.enabled = false;
+    }
+
+    public void SetQuestionMark()
+    {
+        mark.enabled = true;
+        mark.sprite = questionMark;
+    }
+    public void SetExclamationMark()
+    {
+        mark.enabled = true;
+        mark.sprite = exclamationMark;
     }
 }

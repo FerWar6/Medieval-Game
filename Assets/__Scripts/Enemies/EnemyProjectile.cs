@@ -86,7 +86,6 @@ public class EnemyProjectile : MonoBehaviour
     private void PlaySound()
     {
         AudioManager.instance.SetAudioClip(hitSound, transform.position);
-        AlertManager.instance.SetAlertPos(transform.position);
     }
 }
 

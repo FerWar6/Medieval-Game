@@ -5,19 +5,19 @@ using UnityEngine.AI;
 
 public class EnemyBehaviour : MonoBehaviour
 {
-    private Color testColor;
-
-    [SerializeField] EnemyUI enemyUI;
-
+    // testing
     [SerializeField] bool lockEnemyForTesting = false;
 
-    [SerializeField] NavMeshAgent agent;
-
-    [SerializeField] Transform player;
-
-    [SerializeField] LayerMask whatIsGround, whatIsPlayer;
-
+    //general
     [SerializeField] int health;
+
+    [SerializeField] float cooldownDuration = 1f;
+    private bool cooldownActive = false;
+    private float cooldownTimer = 0f;
+
+    [SerializeField] NavMeshAgent agent;
+    [SerializeField] Transform player;
+    [SerializeField] LayerMask whatIsGround, whatIsPlayer, whatIsAlert;
 
     //Patroling
     [SerializeField] Vector3 walkPoint;
@@ -25,22 +25,24 @@ public class EnemyBehaviour : MonoBehaviour
     [SerializeField] float walkPointRange;
     private float timeToReachTarget;
     float proximityThreshold = 1f;
-    private bool cooldownActive = false;
-    [SerializeField] float cooldownDuration = 1f;
-    private float cooldownTimer = 0f;
-
-
+    
     //Attacking
     [SerializeField] float timeBetweenAttacks;
     bool alreadyAttacked;
     [SerializeField] GameObject projectile;
 
-    //states
-    [SerializeField] float sightRange, attackRange;
-    [SerializeField] bool playerInSightRange, playerInAttackRange;
+    //Investigating
+    [SerializeField] Vector3 investigationPoint;
+    bool investigationPointSet;
+
+    //States
+    [SerializeField] float sightRange, attackRange, alertRange;
+    [SerializeField] bool playerInSightRange, playerInAttackRange, alertSourceInRange;
 
     //UI
     private bool canChangeExclamation = true;
+    [SerializeField] EnemyUI enemyUI;
+
     private void Awake()
     {
         player = GameObject.Find("Player").transform;
@@ -48,22 +50,24 @@ public class EnemyBehaviour : MonoBehaviour
     }
     private void Update()
     {
-        //check for sight and attack range
+        //check for sight, attack and investigate range
+        alertSourceInRange = AlertPointInRange();
         playerInSightRange = LookForPlayer(sightRange);
         playerInAttackRange = LookForPlayer(attackRange);
 
         if (!lockEnemyForTesting)
         {
-            if (!playerInSightRange && !playerInAttackRange) Patroling();
+            if (!playerInSightRange && !playerInAttackRange && !alertSourceInRange) Patroling();
             if (playerInSightRange && !playerInAttackRange) ChasePlayer();
             if (playerInAttackRange && playerInSightRange) AttackPlayer();
+            if (!playerInAttackRange && !playerInSightRange && alertSourceInRange) Investigate();
         }
     }
 
 
     private void Patroling()
     {
-        SetExclamationMark(false);
+        SetUI(0);
 
         if (!walkPointSet)
         {
@@ -137,12 +141,12 @@ public class EnemyBehaviour : MonoBehaviour
 
     private void ChasePlayer()
     {
-        SetExclamationMark(true);
+        SetUI(2);
         agent.SetDestination(player.position);
     }
     private void AttackPlayer()
     {
-        SetExclamationMark(true);
+        SetUI(2);
         //make sure enemy doesnt move
         agent.SetDestination(transform.position);
 
@@ -172,6 +176,91 @@ public class EnemyBehaviour : MonoBehaviour
     {
         alreadyAttacked = false;
     }
+    private void Investigate()
+    {
+        SetUI(1);
+        GameObject currentAlertManager = SearchForAlertPointRecent();
+        Vector3 alertSource = currentAlertManager.transform.position;
+        agent.SetDestination(alertSource);
+        transform.LookAt(alertSource);
+        transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
+
+        Vector3 distanceToWalkPoint = transform.position - new Vector3(alertSource.x, 0, alertSource.z);
+
+        if (distanceToWalkPoint.magnitude < 1f)
+        {
+            Debug.Log("destination reached");
+            AlertManager.instance.ForceReturnAlertSource(currentAlertManager);
+            alertSource = currentAlertManager.transform.position;
+        }
+    }
+    private GameObject SearchForAlertPointRecent()
+    {
+        GameObject closestAlertSource = null;
+        float shortestTimeExisted = float.MaxValue;
+
+        for (int i = 0; i < AlertManager.instance.activeAlertSourceList.Count; i++)
+        {
+            GameObject alertSource = AlertManager.instance.activeAlertSourceList[i];
+
+            float distance = Vector3.Distance(transform.position, alertSource.transform.position);
+            float timeExisted = alertSource.GetComponent<AlertSourceManager>().timeExisted;
+
+            if (distance < alertRange)
+            {
+                if (timeExisted < shortestTimeExisted)
+                {
+                    shortestTimeExisted = timeExisted;
+                    closestAlertSource = alertSource;
+                }
+            }
+        }
+        return closestAlertSource;
+    }
+    private GameObject SearchForAlertPointDistance()
+    {
+        GameObject closestAlertSource = null;
+        float closestDistance = float.MaxValue;
+
+        for (int i = 0; i < AlertManager.instance.activeAlertSourceList.Count; i++)
+        {
+            GameObject alertSource = AlertManager.instance.activeAlertSourceList[i];
+
+            float distance = Vector3.Distance(transform.position, alertSource.transform.position);
+
+            if (distance < alertRange)
+            {
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closestAlertSource = alertSource;
+                }
+            }
+        }
+        return closestAlertSource;
+    }
+
+
+
+    private bool AlertPointInRange()
+    {
+        if(AlertManager.instance.activeAlertSourceList != null)
+        {
+            for (int i = 0; i < AlertManager.instance.activeAlertSourceList.Count; i++)
+            {
+                GameObject alertSource = AlertManager.instance.activeAlertSourceList[i];
+
+                float distance = Vector3.Distance(transform.position, alertSource.transform.position);
+
+                if (distance < alertRange)
+                {
+                    return true;
+                }
+
+            }
+        }
+        return false;
+    }
 
     public void TakeDamage(int damage)
     {
@@ -184,15 +273,7 @@ public class EnemyBehaviour : MonoBehaviour
     {
         Destroy(gameObject);
     }
-    private void OnDrawGizmosSelected()
-    {
-        Vector3 middleOfEnemy = new Vector3(transform.position.x, transform.position.y + 0.8f, transform.position.z);
-        Gizmos.color = Color.red;
-        Gizmos.DrawRay(middleOfEnemy, transform.forward * sightRange);
-        Gizmos.color = Color.green;
-        Gizmos.DrawRay(middleOfEnemy, transform.forward * attackRange);
 
-    }
     void DrawRaycast(Vector3 direction, Color color)
     {
         Debug.DrawRay(transform.position, direction * sightRange, color);
@@ -227,18 +308,40 @@ public class EnemyBehaviour : MonoBehaviour
 
         return false;
     }
-    void SetExclamationMark(bool active)
+    void SetUI(int markIndex)
     {
         if (canChangeExclamation)
         {
-            StartCoroutine(ChangeExclamationDelay(active));
+            StartCoroutine(ChangeUIDelay(markIndex));
         }
     }
-    private IEnumerator ChangeExclamationDelay(bool active)
+    private IEnumerator ChangeUIDelay(int markIndex)
     {
         canChangeExclamation = false;
-        yield return new WaitForSeconds(0.25f);
-        enemyUI.SetExclamationMark(active);
+        yield return new WaitForSeconds(0.15f);
+        switch (markIndex)
+        {
+            case 0:
+                enemyUI.UIOff();
+                break;
+            case 1:
+                enemyUI.SetQuestionMark();
+                break;
+            case 2:
+                enemyUI.SetExclamationMark();
+                break;
+        }
         canChangeExclamation = true;
+    }
+    private void OnDrawGizmosSelected()
+    {
+        Vector3 middleOfEnemy = new Vector3(transform.position.x, transform.position.y + 0.8f, transform.position.z);
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(middleOfEnemy, transform.forward * sightRange);
+        Gizmos.color = Color.green;
+        Gizmos.DrawRay(middleOfEnemy, transform.forward * attackRange);
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(middleOfEnemy, alertRange);
+
     }
 }

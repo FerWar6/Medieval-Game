@@ -3,7 +3,6 @@ using UnityEngine;
 using System.Collections;
 public class PlayerAttackRaycast : MonoBehaviour
 {
-    [SerializeField] GoldenBallAnimation ballAnimator;
     private bool canFire = true;
 
     public LayerMask enemyLayerMask;
@@ -34,15 +33,12 @@ public class PlayerAttackRaycast : MonoBehaviour
         if (Physics.Raycast(Camera.main.transform.position, direction, out hit))
         {
 
-            ballAnimator.SetEndPosition(hit.point);
-
             if (LayerMask.LayerToName(hit.collider.gameObject.layer) == "Enemy")
             {
                 EnemyBehaviour enemyBehaviour = hit.collider.GetComponent<EnemyBehaviour>();
                 if (enemyBehaviour != null)
                 {
                     enemyBehaviour.TakeDamage(40);
-                    Debug.Log("Enemy in sight. Dealt damage to enemy.");
                 }
             }
         }

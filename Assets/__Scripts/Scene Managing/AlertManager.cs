@@ -12,10 +12,11 @@ public class AlertManager : MonoBehaviour
 
     public GameObject alertSource;
 
-    public List<GameObject> alertSourceList = new List<GameObject>();
+    public List<GameObject> inActiveAlertSourceList = new List<GameObject>();
+    public List<GameObject> activeAlertSourceList = new List<GameObject>();
 
     Vector3 baseAlertPos = new Vector3(0, 200, 0);
-    public float returnAlertCooldown = 5f;
+    public float returnAlertCooldown = 2f;
 
     private void Awake()
     {
@@ -33,47 +34,65 @@ public class AlertManager : MonoBehaviour
     {
         for (int i = 0; i < numberOfAlertSources; i++)
         {
-            GameObject newAudioSource = Instantiate(alertSource, baseAlertPos, Quaternion.identity, inActiveAlertPool);
-            AddToList(newAudioSource);
+            GameObject newAlertSource = Instantiate(alertSource, baseAlertPos, Quaternion.identity, inActiveAlertPool);
+            AddToList(inActiveAlertSourceList, newAlertSource);
         }
     }
-    public void SetAlertPos(Vector3 position)
+    public void SetAlert(Vector3 position, float cooldown = 5f)
     {
-        GameObject openAlert = FindEmptyAudioClip();
-        if (openAlert != null)
+        if (inActiveAlertPool != null)
         {
-            openAlert.transform.parent = activeAlertPool;
+            GameObject openAlert = FindEmptyAlertClip();
+
+            AlertSourceManager man = openAlert.GetComponent<AlertSourceManager>();
+            man.cooldown = cooldown;
+            MoveFromListToList(inActiveAlertSourceList, activeAlertSourceList, openAlert, true);
             openAlert.transform.position = position;
 
-            openAlert.GetComponent<AlertSourceManager>().isActive = true;
-
-            StartCoroutine(ReturnAlertSource(openAlert));
+            StartCoroutine(AutoReturnAlertSource(openAlert, cooldown));
         }
     }
-    public GameObject FindEmptyAudioClip()
+    private IEnumerator AutoReturnAlertSource(GameObject sourceObject, float cooldown)
     {
-        GameObject openAlert = null;
 
-        for (int i = 0; i < alertSourceList.Count; i++)
+        AlertSourceManager sourceManager = sourceObject.GetComponent<AlertSourceManager>();
+        yield return new WaitForSeconds(cooldown);
+
+        MoveFromListToList(activeAlertSourceList, inActiveAlertSourceList, sourceObject, false);
+        sourceObject.transform.position = baseAlertPos;
+    }
+    public void ForceReturnAlertSource(GameObject sourceObject)
+    {
+        AlertSourceManager sourceManager = sourceObject.GetComponent<AlertSourceManager>();
+
+        MoveFromListToList(activeAlertSourceList, inActiveAlertSourceList, sourceObject, false);
+        sourceObject.transform.position = baseAlertPos;
+    }
+    private void MoveFromListToList(List<GameObject> fromList, List<GameObject> toList, GameObject alert, bool toActive)
+    {
+        fromList.Remove(alert);
+        toList.Add(alert);
+        if (toActive)
         {
-            if (alertSourceList[i].GetComponent<AlertSourceManager>().isActive == false)
-            {
-                openAlert = alertSourceList[i];
-                return openAlert;
-            }
+            alert.transform.parent = activeAlertPool;
+        }
+        else
+        {
+            alert.transform.parent = inActiveAlertPool;
+        }
+    }
+    public GameObject FindEmptyAlertClip()
+    {
+        if(inActiveAlertPool != null)
+        {
+            return inActiveAlertSourceList[0];
+
         }
         return null;
     }
-    private IEnumerator ReturnAlertSource(GameObject sourceObject)
-    {
-        yield return new WaitForSeconds(returnAlertCooldown);
 
-        sourceObject.transform.parent = inActiveAlertPool;
-        sourceObject.transform.position = baseAlertPos;
-        GetComponent<AlertSourceManager>().isActive = false;
-    }
-    public void AddToList(GameObject source)
+    public void AddToList(List<GameObject> list, GameObject source)
     {
-        alertSourceList.Add(source);
+        list.Add(source);
     }
 }
