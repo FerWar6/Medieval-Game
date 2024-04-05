@@ -38,7 +38,7 @@ public class PlayerAttack : MonoBehaviour
         fireballAnim.SetTrigger("regenFireball");
         if (fireBallSounds != null)
         {
-            //PlayFireballSound();
+            PlayFireballSound();
         }
     }
     void PerformRaycast(Vector3 direction)

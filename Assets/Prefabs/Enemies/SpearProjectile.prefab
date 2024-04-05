@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6939447953614919991}
   - component: {fileID: -1354236007100548305}
   m_Layer: 11
-  m_Name: EnemyProjectile
+  m_Name: SpearProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -95,6 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43306050f6d8dfc4b9a04420e896cb69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 10
   hitSound: {fileID: 8300000, guid: 49d92aea104cd3c4395c2fd2cefdabab, type: 3}
   groundLayerMask:
     serializedVersion: 2
@@ -128,15 +129,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 401216, guid: 843cd7f8f2fb4d1488ab944cd5e973d8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.115540124
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 401216, guid: 843cd7f8f2fb4d1488ab944cd5e973d8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.26320866
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 401216, guid: 843cd7f8f2fb4d1488ab944cd5e973d8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.3854512
+      value: -1.6
       objectReference: {fileID: 0}
     - target: {fileID: 401216, guid: 843cd7f8f2fb4d1488ab944cd5e973d8, type: 3}
       propertyPath: m_LocalRotation.w

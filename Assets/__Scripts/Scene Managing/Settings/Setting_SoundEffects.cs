@@ -17,6 +17,8 @@ public class Setting_SoundEffects : MonoBehaviour
         SettingsManager.instance.soundEffectVolume = inputSens;
 
         soundEffectText.text = SettingsManager.instance.soundEffectVolume.ToString();
+
+        SettingsManager.instance.SaveSettings();
     }
     private void LoadSetting()
     {

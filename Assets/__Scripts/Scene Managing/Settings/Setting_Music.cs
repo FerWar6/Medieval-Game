@@ -17,6 +17,9 @@ public class Setting_Music : MonoBehaviour
         SettingsManager.instance.musicVolume = inputSens;
 
         musicText.text = SettingsManager.instance.musicVolume.ToString();
+
+        SettingsManager.instance.SaveSettings();
+
     }
     private void LoadSetting()
     {

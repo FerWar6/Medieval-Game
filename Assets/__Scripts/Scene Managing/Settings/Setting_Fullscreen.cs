@@ -28,5 +28,8 @@ public class Setting_Fullscreen : MonoBehaviour
             offIndicator.enabled = true;
             onIndicator.enabled = false;
         }
+
+        SettingsManager.instance.SaveSettings();
+
     }
 }

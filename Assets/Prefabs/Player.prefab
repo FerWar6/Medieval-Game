@@ -5443,7 +5443,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e99556b96cc6a24e842bd3254a66cb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fireBallSounds: []
+  fireBallSounds:
+  - {fileID: 8300000, guid: 34b39f1d65ec51146902e5e86200c2c0, type: 3}
+  - {fileID: 8300000, guid: 9858d2b29273f2b4f9e452d1a1349bb2, type: 3}
+  - {fileID: 8300000, guid: 10d3ec4d12ed628489e595ac9af95f10, type: 3}
   projectilePool: {fileID: 0}
   fireballAnim: {fileID: 4669672230870357611}
   projectile: {fileID: 5535170437042977692, guid: 3d5b505a5f6597e4bb4c6f1497f4a9f9,

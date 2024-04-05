@@ -5,47 +5,61 @@ using UnityEngine.AI;
 
 public class EnemyBehaviour : MonoBehaviour
 {
-    // testing
+    // ScriptableObject
+    [SerializeField] EnemyDataScriptableObject enemyData;
+
+    // UI
+    [SerializeField] EnemyUI enemyUI;
+
+    // Testing Variables
     [SerializeField] bool lockEnemyForTesting = false;
 
-    //general
-    [SerializeField] int health;
+    // General Variables
+    private int health;
 
-    [SerializeField] float cooldownDuration = 1f;
-    private bool cooldownActive = false;
-    private float cooldownTimer = 0f;
+    // Cooldown Between Pathing
+    [SerializeField] float cooldownDuration;
+    [SerializeField] bool cooldownActive = false;
+    [SerializeField] float cooldownTimer = 0f;
+
+    private Transform player;
 
     [SerializeField] NavMeshAgent agent;
-    [SerializeField] Transform player;
-    [SerializeField] LayerMask whatIsGround, whatIsPlayer, whatIsAlert;
 
     //Patroling
     [SerializeField] Vector3 walkPoint;
     bool walkPointSet;
     [SerializeField] float walkPointRange;
-    private float timeToReachTarget;
+    [SerializeField] float timeToReachTarget;
     float proximityThreshold = 1f;
     
     //Attacking
-    [SerializeField] float timeBetweenAttacks;
-    bool alreadyAttacked;
-    [SerializeField] GameObject projectile;
+    private float timeBetweenAttacks;
+    private bool alreadyAttacked;
+    private GameObject projectile;
 
     //Investigating
     [SerializeField] Vector3 investigationPoint;
     bool investigationPointSet;
 
     //States
-    [SerializeField] float sightRange, attackRange, alertRange;
+    private float sightRange, attackRange, alertRange;
     [SerializeField] bool playerInSightRange, playerInAttackRange, alertSourceInRange;
 
     //UI
     private bool canChangeExclamation = true;
-    [SerializeField] EnemyUI enemyUI;
+    [SerializeField] LayerMask whatIsGround, whatIsPlayer, whatIsAlert;
 
-    private void Awake()
+    private void Start()
     {
-        player = GameObject.Find("Player").transform;
+        health = enemyData.health;
+        cooldownDuration = enemyData.pathingCooldown;
+        timeBetweenAttacks = enemyData.attackCooldown;
+        sightRange = enemyData.sightRange;
+        attackRange = enemyData.attackRange;
+        alertRange = enemyData.alertRange;
+        projectile = enemyData.projectile;
+        player = PlayerData.instance.playerPos;
         agent = GetComponent<NavMeshAgent>();
     }
     private void Update()

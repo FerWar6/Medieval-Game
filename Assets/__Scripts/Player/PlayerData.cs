@@ -8,6 +8,7 @@ public class PlayerData : MonoBehaviour
 {
     public static PlayerData instance { get; private set; }
 
+    public Transform playerPos;
     public int playerHealth = 100;
 
     public List<GameObject> inventoryGameobjects;

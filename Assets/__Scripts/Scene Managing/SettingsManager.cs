@@ -12,7 +12,10 @@ public class SettingsManager : MonoBehaviour
     public bool fullscreen = true;
 
     public float playerSens = 0.98f;
+
+    [Range(0, 100)]
     public int musicVolume = 40;
+    [Range(0, 100)]
     public int soundEffectVolume = 40;
 
     public float playerFOV = 60f;
@@ -47,5 +50,9 @@ public class SettingsManager : MonoBehaviour
         Time.timeScale = 1f;
         Cursor.visible = false;
 
+    }
+    public void SaveSettings()
+    {
+        PlayerPrefs.SetFloat("musicVolume", musicVolume);
     }
 }

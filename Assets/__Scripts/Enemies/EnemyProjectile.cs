@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyProjectile : MonoBehaviour
 {
+    [SerializeField] int damage = 10;
     [SerializeField] AudioClip hitSound;
     [SerializeField] LayerMask groundLayerMask;
     [SerializeField] LayerMask playerLayerMask;
@@ -36,7 +37,7 @@ public class EnemyProjectile : MonoBehaviour
                 PlaySound();
             }
             LockProjectile();
-            PlayerData.instance.ModifyPlayerHealth(10, false);
+            PlayerData.instance.ModifyPlayerHealth(damage, false);
             Camera.main.GetComponent<CamAnimation>().PlayBloodEffect();
             PlayParticleAndDestroy();
         }

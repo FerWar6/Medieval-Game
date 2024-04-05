@@ -39,6 +39,8 @@ public class Setting_Sensitivity : MonoBehaviour
         {
             sensText.text = SettingsManager.instance.playerSens.ToString("F1");
         }
+        SettingsManager.instance.SaveSettings();
+
     }
     private void LoadSetting()
     {
