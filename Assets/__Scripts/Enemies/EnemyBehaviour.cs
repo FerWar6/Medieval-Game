@@ -281,6 +281,7 @@ public class EnemyBehaviour : MonoBehaviour
     bool LookForPlayer(float range)
     {
         Vector3 middleOfEnemy = new Vector3(transform.position.x, transform.position.y + 0.8f, transform.position.z);
+        Vector3 aboveEnemy = new Vector3(transform.position.x, transform.position.y + 1.5f, transform.position.z);
 
         Vector3[] directions = {
         transform.forward,
@@ -301,6 +302,10 @@ public class EnemyBehaviour : MonoBehaviour
         foreach (Vector3 direction in directions)
         {
             if (Physics.Raycast(middleOfEnemy, direction, range, whatIsPlayer))
+            {
+                return true;
+            }
+            if (Physics.Raycast(aboveEnemy, direction, range, whatIsPlayer))
             {
                 return true;
             }
