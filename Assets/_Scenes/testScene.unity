@@ -3750,16 +3750,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 47798225}
     m_Modifications:
-    - target: {fileID: 1062573980329036462, guid: 09fee0f8762a1044b81f8f8df9e0133a,
-        type: 3}
-      propertyPath: lockEnemyForTesting
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1588127948681249888, guid: 09fee0f8762a1044b81f8f8df9e0133a,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6576814291107896354, guid: 09fee0f8762a1044b81f8f8df9e0133a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4035,16 +4025,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy_BigSpearThrower
       objectReference: {fileID: 0}
-    - target: {fileID: 7114746038206262494, guid: eaad8c42f6acdb840bdbe228caaf994c,
-        type: 3}
-      propertyPath: m_Height
-      value: 1.7905284
-      objectReference: {fileID: 0}
-    - target: {fileID: 7114746038206262494, guid: eaad8c42f6acdb840bdbe228caaf994c,
-        type: 3}
-      propertyPath: m_Center.y
-      value: 0.93410593
-      objectReference: {fileID: 0}
     - target: {fileID: 7835443856814489733, guid: eaad8c42f6acdb840bdbe228caaf994c,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4093,11 +4073,6 @@ PrefabInstance:
     - target: {fileID: 7835443856814489733, guid: eaad8c42f6acdb840bdbe228caaf994c,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8485972333668025639, guid: eaad8c42f6acdb840bdbe228caaf994c,
-        type: 3}
-      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

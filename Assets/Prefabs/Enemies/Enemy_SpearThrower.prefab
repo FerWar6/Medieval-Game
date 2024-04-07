@@ -552,13 +552,13 @@ GameObject:
   m_Component:
   - component: {fileID: 3676706611980027648}
   - component: {fileID: 4171622644503589097}
-  m_Layer: 16
+  m_Layer: 12
   m_Name: InnerEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3676706611980027648
 Transform:
   m_ObjectHideFlags: 0
@@ -593,10 +593,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.3
-  m_Height: 1.8742889
+  m_Radius: 0.4
+  m_Height: 1.85
   m_Direction: 1
-  m_Center: {x: 0, y: 0.9250389, z: 0}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &1942059511144939061
 GameObject:
   m_ObjectHideFlags: 0
@@ -2680,9 +2680,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6576814291107896354}
   - component: {fileID: 5076275470519773105}
-  - component: {fileID: 6746568936159093993}
   - component: {fileID: 1062573980329036462}
   - component: {fileID: 2119031067333948719}
+  - component: {fileID: 5021863821447954331}
   m_Layer: 12
   m_Name: Enemy_SpearThrower
   m_TagString: Untagged
@@ -2734,31 +2734,8 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 32
+  m_Constraints: 126
   m_CollisionDetection: 0
---- !u!136 &6746568936159093993
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8341874544432328762}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.36531746
-  m_Height: 1.8742889
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.9250389, z: 0}
 --- !u!114 &1062573980329036462
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2816,6 +2793,27 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!65 &5021863821447954331
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8341874544432328762}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.5, y: 0.1, z: 0.5}
+  m_Center: {x: 0, y: 0.06, z: 0}
 --- !u!1 &8413929979393996053
 GameObject:
   m_ObjectHideFlags: 0

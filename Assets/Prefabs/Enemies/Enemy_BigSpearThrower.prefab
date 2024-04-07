@@ -1302,9 +1302,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7835443856814489733}
   - component: {fileID: 8754681790814343729}
-  - component: {fileID: 5989125639793848583}
   - component: {fileID: 3273446847430283606}
   - component: {fileID: 5379440042845510893}
+  - component: {fileID: 5019413990439934771}
   m_Layer: 12
   m_Name: Enemy_BigSpearThrower
   m_TagString: Untagged
@@ -1356,31 +1356,8 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 32
+  m_Constraints: 126
   m_CollisionDetection: 0
---- !u!136 &5989125639793848583
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3762308650360888390}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.36531746
-  m_Height: 1.8742889
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.9250389, z: 0}
 --- !u!114 &3273446847430283606
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1438,6 +1415,27 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!65 &5019413990439934771
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3762308650360888390}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.5, y: 0.1, z: 0.5}
+  m_Center: {x: 0, y: 0.06, z: 0}
 --- !u!1 &3762640159707932811
 GameObject:
   m_ObjectHideFlags: 0
@@ -2724,13 +2722,13 @@ GameObject:
   m_Component:
   - component: {fileID: 7193475407406663894}
   - component: {fileID: 7114746038206262494}
-  m_Layer: 16
+  m_Layer: 12
   m_Name: InnerEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7193475407406663894
 Transform:
   m_ObjectHideFlags: 0
@@ -2765,10 +2763,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.3
-  m_Height: 1.8742889
+  m_Radius: 0.4
+  m_Height: 1.85
   m_Direction: 1
-  m_Center: {x: 0, y: 0.9250389, z: 0}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &8539142354951414140
 GameObject:
   m_ObjectHideFlags: 0
