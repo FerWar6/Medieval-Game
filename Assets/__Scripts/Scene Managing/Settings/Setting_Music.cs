@@ -12,18 +12,22 @@ public class Setting_Music : MonoBehaviour
     }
     public void SetMusicVolume()
     {
-        int inputSens = Mathf.RoundToInt(musicSlider.value);
+        int input = Mathf.RoundToInt(musicSlider.value);
+        int inputSens = Mathf.RoundToInt(input / 2 - 30);
 
         SettingsManager.instance.musicVolume = inputSens;
-
-        musicText.text = SettingsManager.instance.musicVolume.ToString();
-
         SettingsManager.instance.SaveSettings();
+        AudioManager.instance.SetMusicVolume(inputSens);
 
+        musicText.text = input.ToString();
     }
     private void LoadSetting()
     {
-        musicSlider.value = SettingsManager.instance.musicVolume;
-        musicText.text = SettingsManager.instance.musicVolume.ToString();
+        int musicVolume = PlayerPrefs.GetInt(SettingsManager.instance.playerPrefNames[2]);
+
+        int sliderValue = 2 * (musicVolume + 30);
+
+        musicSlider.value = sliderValue;
+        musicText.text = (sliderValue).ToString();
     }
 }

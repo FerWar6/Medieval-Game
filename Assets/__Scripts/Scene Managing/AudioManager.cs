@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Audio;
 using UnityEngine;
 
 public class AudioManager : MonoBehaviour
@@ -14,6 +15,7 @@ public class AudioManager : MonoBehaviour
 
     public List<GameObject> audioSourceList = new List<GameObject>();
 
+    public AudioMixer mixer;
 
     private void Awake()
     {
@@ -29,15 +31,17 @@ public class AudioManager : MonoBehaviour
     }
     private void Start()
     {
-        for (int i = 0; i < numberOfAudioSources; i++)
+        if(inActiveAudioPool != null && activeAudioPool != null)
         {
-            Vector3 audioSourcePos = new Vector3(0, 0, 0);
-            GameObject newAudioSource = Instantiate(audioSource, audioSourcePos, Quaternion.identity, inActiveAudioPool);
-            AddToList(newAudioSource);
+            for (int i = 0; i < numberOfAudioSources; i++)
+            {
+                Vector3 audioSourcePos = new Vector3(0, 0, 0);
+                GameObject newAudioSource = Instantiate(audioSource, audioSourcePos, Quaternion.identity, inActiveAudioPool);
+                AddToList(newAudioSource);
+            }
         }
-
     }
-    public void SetAudioClip(AudioClip clip, Vector3 position)
+    public void SetAudioClip(AudioClip clip, Vector3 position, bool is2D = false)
     {
         GameObject openAudioSource = FindEmptyAudioClip();
         if(openAudioSource != null)
@@ -46,7 +50,7 @@ public class AudioManager : MonoBehaviour
             openAudioSource.transform.position = position;
 
             AudioSource source = openAudioSource.GetComponent<AudioSource>();
-
+            if (is2D) source.spatialBlend = 0;
             source.clip = clip;
             source.Play();
 
@@ -78,5 +82,13 @@ public class AudioManager : MonoBehaviour
         sourceObject.transform.parent = inActiveAudioPool;
         audioSourse.clip = null;
     }
-
+    public void SetMusicVolume(int input)
+    {
+        mixer.SetFloat("Music Volume", input);
+    }
+    public void SetSoundEffectVolume(int input)
+    {
+        mixer.SetFloat("Sound Effect Volume", input);
+        Debug.Log("sound effect changed" + input);
+    }
 }

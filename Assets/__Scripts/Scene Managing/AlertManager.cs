@@ -32,10 +32,13 @@ public class AlertManager : MonoBehaviour
     }
     void Start()
     {
-        for (int i = 0; i < numberOfAlertSources; i++)
+        if(inActiveAlertPool != null && activeAlertPool != null)
         {
-            GameObject newAlertSource = Instantiate(alertSource, baseAlertPos, Quaternion.identity, inActiveAlertPool);
-            AddToList(inActiveAlertSourceList, newAlertSource);
+            for (int i = 0; i < numberOfAlertSources; i++)
+            {
+                GameObject newAlertSource = Instantiate(alertSource, baseAlertPos, Quaternion.identity, inActiveAlertPool);
+                AddToList(inActiveAlertSourceList, newAlertSource);
+            }
         }
     }
     public void SetAlert(Vector3 position, float cooldown = 5f)

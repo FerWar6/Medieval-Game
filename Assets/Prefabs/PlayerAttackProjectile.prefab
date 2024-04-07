@@ -236,10 +236,10 @@ MonoBehaviour:
   trailAnim: {fileID: 8402531546088655656}
   everythingNotPlayerLayerMask:
     serializedVersion: 2
-    m_Bits: 25591
+    m_Bits: 94199
   enemyLayerMask:
     serializedVersion: 2
-    m_Bits: 69632
+    m_Bits: 4096
 --- !u!1001 &602872055639939405
 PrefabInstance:
   m_ObjectHideFlags: 0

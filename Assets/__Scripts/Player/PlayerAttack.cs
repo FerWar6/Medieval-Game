@@ -73,22 +73,17 @@ public class PlayerAttack : MonoBehaviour
     {
         if(fireBallSounds != null)
         {
-            int random = Random.Range(1, 4);
+            int random = Random.Range(1, fireBallSounds.Count + 1);
             switch (random)
             {
                 case 1:
                     {
-                        AudioManager.instance.SetAudioClip(fireBallSounds[0], transform.position);
+                        AudioManager.instance.SetAudioClip(fireBallSounds[0], transform.position, true);
                         break;
                     }
                 case 2:
                     {
-                        AudioManager.instance.SetAudioClip(fireBallSounds[1], transform.position);
-                        break;
-                    }
-                case 3:
-                    {
-                        AudioManager.instance.SetAudioClip(fireBallSounds[2], transform.position);
+                        AudioManager.instance.SetAudioClip(fireBallSounds[1], transform.position, true);
                         break;
                     }
             }

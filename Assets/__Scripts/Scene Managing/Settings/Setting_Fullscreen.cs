@@ -8,7 +8,7 @@ public class Setting_Fullscreen : MonoBehaviour
     [SerializeField] private Image onIndicator;
     private void Start()
     {
-        SetFullscreen(SettingsManager.instance.fullscreen);
+        LoadSetting();
     }
     public void SetFullscreen(bool input)
     {
@@ -28,8 +28,9 @@ public class Setting_Fullscreen : MonoBehaviour
             offIndicator.enabled = true;
             onIndicator.enabled = false;
         }
-
-        SettingsManager.instance.SaveSettings();
-
+    }
+    private void LoadSetting()
+    {
+        SetFullscreen(PlayerPrefs.GetInt(SettingsManager.instance.playerPrefNames[0]) != 0 ? true : false);
     }
 }
