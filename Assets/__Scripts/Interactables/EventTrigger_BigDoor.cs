@@ -13,6 +13,10 @@ public class EventTrigger_BigDoor : MonoBehaviour
     private GameObject enemy1;
     [SerializeField]
     private GameObject enemy2;
+
+    
+    [SerializeField] float delay;
+
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -23,7 +27,7 @@ public class EventTrigger_BigDoor : MonoBehaviour
 
     private IEnumerator TriggerEventWithDelay()
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(delay);
 
         if (anim != null)
         {

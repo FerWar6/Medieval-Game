@@ -6,9 +6,9 @@ public class Setting_SoundEffects : MonoBehaviour
 {
     [SerializeField] private Slider soundEffectSlider;
     [SerializeField] private TextMeshProUGUI soundEffectText;
-    private void Awake()
+    private void Start()
     {
-        LoadSetting();
+        SettingsManager.instance.OnSettingsLoaded.AddListener(LoadSetting);
     }
     public void SetSoundEffectVolume()
     {
@@ -16,18 +16,18 @@ public class Setting_SoundEffects : MonoBehaviour
         int inputSens = Mathf.RoundToInt(input / 2 - 30);
 
         SettingsManager.instance.soundEffectVolume = inputSens;
-        SettingsManager.instance.SaveSettings();
         AudioManager.instance.SetSoundEffectVolume(inputSens);
 
         soundEffectText.text = input.ToString();
     }
     private void LoadSetting()
     {
-        int soundEffectVolume = PlayerPrefs.GetInt(SettingsManager.instance.playerPrefNames[3]);
-
-        int sliderValue = 2 * (soundEffectVolume + 30);
-
+        int sliderValue = 2 * (SettingsManager.instance.soundEffectVolume + 30);
         soundEffectSlider.value = sliderValue;
         soundEffectText.text = (sliderValue).ToString();
+    }
+    private void OnDestroy()
+    {
+        SettingsManager.instance.OnSettingsLoaded.RemoveListener(LoadSetting);
     }
 }

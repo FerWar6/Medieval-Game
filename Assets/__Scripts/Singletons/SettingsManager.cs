@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Events;
+
 
 public class SettingsManager : MonoBehaviour
 {
@@ -23,9 +25,10 @@ public class SettingsManager : MonoBehaviour
 
     public List<string> playerPrefNames = new List<string>();
 
+    public UnityEvent OnSettingsLoaded = new UnityEvent();
+
     private void Awake()
     {
-        //LoadSettings();
         Cursor.visible = true;
         if (instance != null && instance != this)
         {
@@ -36,6 +39,10 @@ public class SettingsManager : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(gameObject);
         }
+/*        playerPrefNames.Add(playerPrefNames[0]);
+        playerPrefNames.Add(playerPrefNames[1]);
+        playerPrefNames.Add(playerPrefNames[2]);
+        playerPrefNames.Add(playerPrefNames[3]);*/
     }
     private void Start()
     {
@@ -75,9 +82,7 @@ public class SettingsManager : MonoBehaviour
         AudioManager.instance.SetMusicVolume(musicVolume);
         AudioManager.instance.SetSoundEffectVolume(soundEffectVolume);
 
-        /*
-                AudioManager.instance.mixer.SetFloat("Music Volume", musicVolume);
-                AudioManager.instance.mixer.SetFloat("Sound Effect Volume", soundEffectVolume);*/
+        OnSettingsLoaded.Invoke();
     }
     void OnApplicationQuit()
     {

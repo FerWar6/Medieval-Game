@@ -8,7 +8,7 @@ public class Setting_Music : MonoBehaviour
     [SerializeField] private TextMeshProUGUI musicText;
     private void Start()
     {
-        LoadSetting();
+        SettingsManager.instance.OnSettingsLoaded.AddListener(LoadSetting);
     }
     public void SetMusicVolume()
     {
@@ -16,18 +16,19 @@ public class Setting_Music : MonoBehaviour
         int inputSens = Mathf.RoundToInt(input / 2 - 30);
 
         SettingsManager.instance.musicVolume = inputSens;
-        SettingsManager.instance.SaveSettings();
         AudioManager.instance.SetMusicVolume(inputSens);
 
         musicText.text = input.ToString();
     }
     private void LoadSetting()
     {
-        int musicVolume = PlayerPrefs.GetInt(SettingsManager.instance.playerPrefNames[2]);
-
-        int sliderValue = 2 * (musicVolume + 30);
+        int sliderValue = 2 * (SettingsManager.instance.musicVolume + 30);
 
         musicSlider.value = sliderValue;
         musicText.text = (sliderValue).ToString();
+    }
+    private void OnDestroy()
+    {
+        SettingsManager.instance.OnSettingsLoaded.RemoveListener(LoadSetting);
     }
 }

@@ -103,8 +103,8 @@ public class EnemyBehaviour : MonoBehaviour
             {
                 Debug.Log("Enemy got stuck");
                 walkPointSet = false;
-                cooldownActive = true; // Activate search cooldown
-                return; // Enemy remains still during cooldown
+                cooldownActive = true;
+                return;
             }
 
             Vector3 distanceToWalkPoint = transform.position - walkPoint;
@@ -112,7 +112,7 @@ public class EnemyBehaviour : MonoBehaviour
             if (distanceToWalkPoint.magnitude < 1f)
             {
                 walkPointSet = false;
-                cooldownActive = true; // Activate search cooldown
+                cooldownActive = true;
             }
         }
 
@@ -139,6 +139,11 @@ public class EnemyBehaviour : MonoBehaviour
 
         if (Physics.Raycast(walkPoint, -transform.up, 2f, whatIsGround) && IsNearNavMesh(walkPoint, 0.25f))
             walkPointSet = true;
+    }
+    public void SetWalkPoint(Vector3 destination)
+    {
+        walkPoint = destination;
+        walkPointSet = true;
     }
     public bool IsNearNavMesh(Vector3 position, float minDistanceToEdge)
     {

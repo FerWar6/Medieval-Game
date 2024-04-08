@@ -89,6 +89,5 @@ public class AudioManager : MonoBehaviour
     public void SetSoundEffectVolume(int input)
     {
         mixer.SetFloat("Sound Effect Volume", input);
-        Debug.Log("sound effect changed" + input);
     }
 }

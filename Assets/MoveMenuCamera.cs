@@ -1,50 +1,44 @@
-using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 
-public class MoveDisplays : MonoBehaviour
+public class MoveMenuCamera : MonoBehaviour
 {
     [SerializeField] AnimationCurve curve;
 
-    [SerializeField] float transitionSpeed = 20f;
-
     [SerializeField] GameObject mainMenu;
     [SerializeField] GameObject settingsMenu;
-    [SerializeField] GameObject deathMenu;
+    [SerializeField] GameObject deathScreen;
+
+    private float transitionSpeed = 30f;
     private Transform mainCam;
     private void Start()
     {
         mainCam = Camera.main.transform;
-        _SetDeathScreen(SettingsManager.instance.deathScreenOn);
-    }
-    public void _SetDeathScreen(bool deathScreen)
-    {
-        if (deathScreen)
+        if (SettingsManager.instance.deathScreenOn)
         {
-            mainMenu.SetActive(false);
-            settingsMenu.SetActive(false);
-            deathMenu.SetActive(true);
-        }
-        else
-        {
-            mainMenu.SetActive(true);
-            settingsMenu.SetActive(true);
-            deathMenu.SetActive(false);
-        }
-    }
+            Vector3 targetPos = new Vector3(mainCam.transform.position.x, mainCam.transform.position.y - 12.4f, mainCam.transform.position.z);
 
-    public void _MoveMenu(bool goLeft)
+            mainCam.position = targetPos;
+        }
+    }
+    public void _MoveMenu(int location)
     {
-        if (goLeft)
+        if (location == 1)
         {
             Vector3 targetPos = new Vector3(mainCam.transform.position.x - 37.85f, mainCam.transform.position.y, mainCam.transform.position.z);
             StartCoroutine(MoveObject(targetPos));
         }
-        else
+        if (location == 2)
         {
             Vector3 targetPos = new Vector3(mainCam.transform.position.x + 37.85f, mainCam.transform.position.y, mainCam.transform.position.z);
             StartCoroutine(MoveObject(targetPos));
         }
+        if (location == 3)
+        {
+            Vector3 targetPos = new Vector3(mainCam.transform.position.x, mainCam.transform.position.y + 12.4f, mainCam.transform.position.z);
+            StartCoroutine(MoveObject(targetPos));
+        }
+
     }
 
     IEnumerator MoveObject(Vector3 targetPosition)
@@ -57,7 +51,7 @@ public class MoveDisplays : MonoBehaviour
         while (elapsedTime < duration)
         {
             float t = elapsedTime / duration;
-            float curveValue = curve.Evaluate(t); // Evaluate curve at current time
+            float curveValue = curve.Evaluate(t);
             mainCam.position = Vector3.Lerp(initialPosition, targetPosition, curveValue);
             elapsedTime += Time.deltaTime;
             yield return null;

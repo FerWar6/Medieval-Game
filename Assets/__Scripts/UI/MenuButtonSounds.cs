@@ -9,8 +9,10 @@ public class MenuButtonSounds : MonoBehaviour
 
     public void PlaySoundOnClick(int clipSoundIndex)
     {
-        source.clip = buttonSounds[clipSoundIndex];
-        source.Play();
+        if(buttonSounds[clipSoundIndex] != null)
+        {
+            source.clip = buttonSounds[clipSoundIndex];
+            source.Play();
+        }
     }
-
 }

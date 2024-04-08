@@ -15,8 +15,8 @@ MonoBehaviour:
   health: 200
   pathingCooldown: 1
   attackCooldown: 0.25
-  sightRange: 7.5
+  sightRange: 10
   attackRange: 5
-  alertRange: 12
+  alertRange: 25
   projectile: {fileID: 6830464998070339146, guid: 6b8955f9445f14644932e374801b54ef,
     type: 3}

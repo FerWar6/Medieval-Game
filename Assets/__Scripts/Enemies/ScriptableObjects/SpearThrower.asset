@@ -17,6 +17,6 @@ MonoBehaviour:
   attackCooldown: 0.5
   sightRange: 7.5
   attackRange: 5
-  alertRange: 10
+  alertRange: 20
   projectile: {fileID: 6830464998070339146, guid: e435fe20ec415ff48830635d06bbfd9e,
     type: 3}

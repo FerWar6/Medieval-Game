@@ -10,7 +10,7 @@ public class Setting_Sensitivity : MonoBehaviour
     [SerializeField] private TextMeshProUGUI sensText;
     private void Start()
     {
-        LoadSetting();
+        SettingsManager.instance.OnSettingsLoaded.AddListener(LoadSetting);
     }
     public void SetSensitivity()
     {
@@ -69,5 +69,9 @@ public class Setting_Sensitivity : MonoBehaviour
         {
             sensText.text = settingValue.ToString("F1");
         }
+    }
+    private void OnDestroy()
+    {
+        SettingsManager.instance.OnSettingsLoaded.RemoveListener(LoadSetting);
     }
 }

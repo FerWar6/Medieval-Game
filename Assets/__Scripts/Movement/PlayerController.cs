@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour
     public void OnMove(InputAction.CallbackContext context)
     {
         movementInput = context.ReadValue<Vector2>();
+        SetAlert(5);
     }
 
     public void OnJump(InputAction.CallbackContext context)
@@ -73,8 +74,6 @@ public class PlayerController : MonoBehaviour
 
         if (sprinting)
         {
-            SetAlert(5);
-
             currentSpeed = sprintSpeed;
             SettingsManager.instance.playerFOV = 65f;
         }
