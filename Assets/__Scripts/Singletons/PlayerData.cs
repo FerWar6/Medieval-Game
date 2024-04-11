@@ -14,6 +14,7 @@ public class PlayerData : MonoBehaviour
     public List<GameObject> inventoryGameobjects;
 
     public UnityEvent OnHealthChanged = new UnityEvent();
+    public UnityEvent OnInventoryUpdate = new UnityEvent();
 
     private void Awake()
     {
@@ -32,10 +33,11 @@ public class PlayerData : MonoBehaviour
     {
         inventoryGameobjects = new List<GameObject>();
     }
-    public void AddGameobjectToInventory(GameObject gameobject)
+    public void AddGameobjectToInventory(GameObject addGameObject)
     {
-        inventoryGameobjects.Add(gameobject);
-    }
+        inventoryGameobjects.Add(addGameObject);
+        OnInventoryUpdate.Invoke();
+    } 
     public void DestroyAllItemsInInventory()
     {
         foreach (GameObject item in inventoryGameobjects)

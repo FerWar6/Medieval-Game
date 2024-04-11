@@ -9,43 +9,50 @@ public class MoveMenuCamera : MonoBehaviour
     [SerializeField] GameObject settingsMenu;
     [SerializeField] GameObject deathScreen;
 
-    private float transitionSpeed = 30f;
     private Transform mainCam;
     private void Start()
     {
         mainCam = Camera.main.transform;
         if (SettingsManager.instance.deathScreenOn)
         {
+            SetMenus(false, false, true);
             Vector3 targetPos = new Vector3(mainCam.transform.position.x, mainCam.transform.position.y - 12.4f, mainCam.transform.position.z);
-
             mainCam.position = targetPos;
+            SettingsManager.instance.deathScreenOn = false;
+        }
+        else
+        {
+            SetMenus(true, false, false);
         }
     }
     public void _MoveMenu(int location)
     {
         if (location == 1)
         {
+            SetMenus(true, true, false);
             Vector3 targetPos = new Vector3(mainCam.transform.position.x - 37.85f, mainCam.transform.position.y, mainCam.transform.position.z);
-            StartCoroutine(MoveObject(targetPos));
+            StartCoroutine(MoveObject(targetPos, false, true, false, 22));
         }
         if (location == 2)
         {
+            SetMenus(true, true, false);
             Vector3 targetPos = new Vector3(mainCam.transform.position.x + 37.85f, mainCam.transform.position.y, mainCam.transform.position.z);
-            StartCoroutine(MoveObject(targetPos));
+            StartCoroutine(MoveObject(targetPos, true, false, false, 22));
         }
         if (location == 3)
         {
+            SetMenus(true, false, true);
             Vector3 targetPos = new Vector3(mainCam.transform.position.x, mainCam.transform.position.y + 12.4f, mainCam.transform.position.z);
-            StartCoroutine(MoveObject(targetPos));
+            StartCoroutine(MoveObject(targetPos, true, false, false, 10));
         }
 
     }
 
-    IEnumerator MoveObject(Vector3 targetPosition)
+    IEnumerator MoveObject(Vector3 targetPosition, bool main, bool settings, bool death, float speed)
     {
         Vector3 initialPosition = mainCam.position;
         float distance = Vector3.Distance(initialPosition, targetPosition);
-        float duration = distance / transitionSpeed;
+        float duration = distance / speed;
         float elapsedTime = 0f;
 
         while (elapsedTime < duration)
@@ -58,5 +65,12 @@ public class MoveMenuCamera : MonoBehaviour
         }
 
         mainCam.position = targetPosition;
+        SetMenus(main, settings, death);
+    }
+    private void SetMenus(bool main, bool settings, bool death)
+    {
+        mainMenu.SetActive(main);
+        settingsMenu.SetActive(settings);
+        deathScreen.SetActive(death);
     }
 }

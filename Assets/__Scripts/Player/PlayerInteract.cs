@@ -32,13 +32,13 @@ public class PlayerInteract : MonoBehaviour
         {
             if ((mask & (1 << hitInfo.collider.gameObject.layer)) != 0)
             {
-                if (hitInfo.collider.GetComponent<Interactable>() != null)
+                if (hitInfo.collider.GetComponent<IInteractable>() != null)
                 {
-                    Interactable interactable = hitInfo.collider.GetComponent<Interactable>();
-                    playerUI.UpdateText(hitInfo.collider.GetComponent<Interactable>().promptMessage);
+                    IInteractable interactable = hitInfo.collider.GetComponent<IInteractable>();
+                    playerUI.UpdateText(hitInfo.collider.GetComponent<IInteractable>().promptMessage);
                     if (interacted && canInteract)
                     {
-                        interactable.BaseInteract();
+                        interactable.Interact();
                         canInteract = false;
                         StartCoroutine(InteractCooldown());
                     }
