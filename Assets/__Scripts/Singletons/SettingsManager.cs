@@ -9,7 +9,7 @@ public class SettingsManager : MonoBehaviour
 {
     public static SettingsManager instance { get; private set; }
 
-    public bool deathScreenOn = false;
+    public int startScreenIndex;
     public bool gamePaused = false;
 
     public bool fullscreen = true;
@@ -27,6 +27,8 @@ public class SettingsManager : MonoBehaviour
 
     public UnityEvent OnSettingsLoaded = new UnityEvent();
 
+    public bool settingsLoaded = false;
+
     private void Awake()
     {
         Cursor.visible = true;
@@ -39,10 +41,6 @@ public class SettingsManager : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(gameObject);
         }
-/*        playerPrefNames.Add(playerPrefNames[0]);
-        playerPrefNames.Add(playerPrefNames[1]);
-        playerPrefNames.Add(playerPrefNames[2]);
-        playerPrefNames.Add(playerPrefNames[3]);*/
     }
     private void Start()
     {

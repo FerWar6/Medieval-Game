@@ -81,8 +81,8 @@ public class PlayerData : MonoBehaviour
     }
     private void OnPlayerDead()
     {
-        SettingsManager.instance.deathScreenOn = true;
-        SceneManager.LoadScene("DeathScreen");
+        SettingsManager.instance.startScreenIndex = 2;
+        SceneManager.LoadScene("AllMenus");
         ResetPlayerHealth();
     }
 }
