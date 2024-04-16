@@ -27,11 +27,10 @@ public class SettingsManager : MonoBehaviour
 
     public UnityEvent OnSettingsLoaded = new UnityEvent();
 
-    public bool settingsLoaded = false;
+    private bool settingsLoaded = false;
 
     private void Awake()
     {
-        Cursor.visible = true;
         if (instance != null && instance != this)
         {
             Destroy(gameObject);
@@ -44,7 +43,13 @@ public class SettingsManager : MonoBehaviour
     }
     private void Start()
     {
-        LoadSettings();
+        settingsLoaded = PlayerPrefs.GetInt("settingsLoaded") != 0 ? true : false;
+        if (!settingsLoaded)
+        {
+            LoadSettings();
+            PlayerPrefs.SetInt("settingsLoaded", true ? 1 : 0);
+        }
+        Cursor.visible = true;
     }
     public void SetPlayerFOV(float fov)
     {
@@ -65,6 +70,8 @@ public class SettingsManager : MonoBehaviour
     }
     public void SaveSettings()
     {
+        PlayerPrefs.SetInt("settingsLoaded", false ? 1 : 0);
+
         PlayerPrefs.SetInt(playerPrefNames[0], fullscreen ? 1 : 0);
         PlayerPrefs.SetFloat(playerPrefNames[1], playerSens);
         PlayerPrefs.SetInt(playerPrefNames[2], musicVolume);
@@ -81,6 +88,7 @@ public class SettingsManager : MonoBehaviour
         AudioManager.instance.SetSoundEffectVolume(soundEffectVolume);
 
         OnSettingsLoaded.Invoke();
+        Debug.Log("Settings Loaded");
     }
     void OnApplicationQuit()
     {

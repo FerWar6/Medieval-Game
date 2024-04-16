@@ -24247,9 +24247,9 @@ MonoBehaviour:
   startScreenIndex: 0
   gamePaused: 0
   fullscreen: 1
-  playerSens: 13.25
-  musicVolume: 8
-  soundEffectVolume: 5
+  playerSens: 1
+  musicVolume: -10
+  soundEffectVolume: -10
   playerFOV: 60
   playerPrefNames:
   - fullscreen
@@ -24259,7 +24259,6 @@ MonoBehaviour:
   OnSettingsLoaded:
     m_PersistentCalls:
       m_Calls: []
-  settingsLoaded: 0
 --- !u!4 &2735433773135196394
 Transform:
   m_ObjectHideFlags: 0
