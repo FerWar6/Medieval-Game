@@ -12,6 +12,7 @@ public class PlayerData : MonoBehaviour
     public int playerHealth = 100;
 
     public List<GameObject> inventoryGameobjects;
+    public GameObject latestObjAdded;
 
     public UnityEvent OnHealthChanged = new UnityEvent();
     public UnityEvent OnInventoryUpdate = new UnityEvent();
@@ -36,6 +37,7 @@ public class PlayerData : MonoBehaviour
     public void AddGameobjectToInventory(GameObject addGameObject)
     {
         inventoryGameobjects.Add(addGameObject);
+        latestObjAdded = addGameObject;
         OnInventoryUpdate.Invoke();
     } 
     public void DestroyAllItemsInInventory()
@@ -44,7 +46,6 @@ public class PlayerData : MonoBehaviour
         {
             Destroy(item);
         }
-
         inventoryGameobjects.Clear();
     }
     public bool ListContainsItemByName(string name)
@@ -56,7 +57,6 @@ public class PlayerData : MonoBehaviour
                 return true;
             }
         }
-
         return false;
     }
 
