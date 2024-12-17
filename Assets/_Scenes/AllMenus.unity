@@ -61469,7 +61469,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32b056f75b640644dab7b6b512b8dc1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startScreenIndex: 2
+  startScreenIndex: 0
   gamePaused: 0
   fullscreen: 1
   playerSens: 1
@@ -62898,6 +62898,7 @@ MonoBehaviour:
   playerPos: {fileID: 0}
   playerHealth: 100
   inventoryGameobjects: []
+  latestObjAdded: {fileID: 0}
   OnHealthChanged:
     m_PersistentCalls:
       m_Calls: []

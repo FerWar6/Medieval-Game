@@ -2,40 +2,45 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Interactable_MagicWall : Interactable
+public class Interactable_MagicWall : MonoBehaviour, IInteractable
 {
-    Interactable_MagicWall wall;
+    public string promptMessage { get { return hasKeyItem ? originalMessage : null; } }
+
     private Animator anim;
 
-    string message = null;
+    private string originalMessage;
+    private bool hasKeyItem = false;
+
     private void Start()
     {
-        wall = GetComponent<Interactable_MagicWall>();
-        message = wall.promptMessage;
-        wall.promptMessage = null;
+        originalMessage = "Open Wall";
         anim = GetComponent<Animator>();
+        PlayerData.instance.OnInventoryUpdate.AddListener(UpdateKeyItemStatus);
     }
-    private void Update()
-    {
-        if (PlayerData.instance.ListContainsItemByName("Keyitem_Jewel"))
-        {
-            wall.promptMessage = message;
-        }
-    }
-    protected override void Interact()
-    {
 
-        if (PlayerData.instance.ListContainsItemByName("Keyitem_Jewel"))
+    private void UpdateKeyItemStatus()
+    {
+        hasKeyItem = PlayerData.instance.ListContainsItemByName("Keyitem_Jewel");
+    }
+
+    public void Interact()
+    {
+        if (hasKeyItem)
         {
             PlayerData.instance.DestroyAllItemsInInventory();
             anim.SetTrigger("OpenDoor");
             DestroyInteractable();
         }
     }
+
     private void DestroyInteractable()
     {
         Destroy(GetComponent<BoxCollider>());
-
         Destroy(this);
+    }
+
+    private void OnDestroy()
+    {
+        PlayerData.instance.OnInventoryUpdate.RemoveListener(UpdateKeyItemStatus);
     }
 }
